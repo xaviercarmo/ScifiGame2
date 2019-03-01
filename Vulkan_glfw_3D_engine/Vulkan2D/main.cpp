@@ -1,6 +1,9 @@
 #include "Graphics.h"
 #include "Input.h"
 #include "CollisionDetection.h"
+#include <ctime>
+#include <windows.h>
+
 Graphics gfx;
 Input input;
 
@@ -28,8 +31,14 @@ int main() {
 		camera.dimensions = glm::vec3(0.01, 0.01, 0.01);
 		camera.velocity = glm::vec3(0, 0, 0);
 		bool lastSpace;
-		while (!gfx.shouldClose) {
 
+		time_t startTime;
+		time_t endTime;
+
+		int frameTimeTarged = 1000/60;
+
+		while (!gfx.shouldClose) {
+			startTime = time(NULL);
 			gfx.setCameraAngle(input.cameraAngle);
 			input.run();
 			gfx.run();
@@ -37,22 +46,22 @@ int main() {
 			inputVelocity = glm::vec3(0, 0, 0);
 			
 			if (input.keys.w) {
-				inputVelocity.z = 0.01;
+				inputVelocity.z = 0.1;
 			}
 			if (input.keys.a) {
-				inputVelocity.x = -0.01;
+				inputVelocity.x = -0.1;
 			}
 			if (input.keys.s) {
-				inputVelocity.z = -0.01;
+				inputVelocity.z = -0.1;
 			}
 			if (input.keys.d) {
-				inputVelocity.x = 0.01;
+				inputVelocity.x = 0.1;
 			}
 			if (input.keys.space) {
-				inputVelocity.y = 0.01;
+				inputVelocity.y = 0.1;
 			}
 			if (input.keys.leftShift) {
-				inputVelocity.y = -0.01;
+				inputVelocity.y = -0.1;
 			}
 
 			camera.velocity = gfx.getProperCameraVelocity(inputVelocity);
@@ -71,10 +80,13 @@ int main() {
 			lastF = input.keys.f;
 			camera.position = gfx.getCameraPos();
 
+			endTime = time(NULL);
+			Sleep(frameTimeTarged - (endTime - startTime));
 		}
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << e.what() << std::endl;
+		for (int i = 0; i < 100000000; i++){}
 		return EXIT_FAILURE;
 	}
 	gfx.cleanup();
