@@ -75,7 +75,6 @@ int main() {
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << e.what() << std::endl;
-		for (int i = 0; i < 100000000; i++){}
 		return EXIT_FAILURE;
 	}
 	gfx.cleanup();
