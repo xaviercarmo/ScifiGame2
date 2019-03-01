@@ -64,6 +64,8 @@
 		} else {
 			shouldClose = true;
 		}
+
+		//vkDeviceWaitIdle(device);
 	}
 
 	void Graphics::cleanupSwapChain() {
@@ -140,6 +142,8 @@
 			glfwGetFramebufferSize(window, &width, &height);
 			glfwWaitEvents();
 		}
+
+		//vkDeviceWaitIdle(device);
 
 		cleanupSwapChain();
 
