@@ -29,8 +29,8 @@ namespace collisionDetection {
 				b1->position.y = b2->position.y + b2->dimensions.y;
 			}
 			//from y negative side
-			if (b1->position.y + b1->dimensions.y -0.01 <= b2->position.y && b1->position.y + b1->dimensions.y + b1->velocity.y > b2->position.y) {
-  				b1->velocity.y = 0;
+			if (b1->position.y + b1->dimensions.y - 0.01 <= b2->position.y && b1->position.y + b1->dimensions.y + b1->velocity.y > b2->position.y) {
+				b1->velocity.y = 0;
 				b1->position.y = b2->position.y - b1->dimensions.y;
 			}
 		}
