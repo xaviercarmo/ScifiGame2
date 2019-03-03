@@ -31,31 +31,22 @@ int main() {
 		camera.velocity = glm::vec3(0, 0, 0);
 		bool lastSpace;
 
-		//time_t startTime;
-		//time_t endTime;
-
-		//int frameTimeTarged = 1000 / 60;
-
-		//start further test variables for new framerate method
-
 		double t = 0.0;
-		const double dt = 1000.0 / 60.0; //1.0 / 60.0;
+		const double dt = 1000.0 / 60.0;
 		float accel = 0;
 
 		auto currentTime = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now());
 		double accumulator = 0.0;
 
-		//end new test variables
 		int counter = 0;
 		while (!gfx.shouldClose) {
-			//startTime = time(NULL);
 			auto newTime = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()); //gets the current time in seconds
 			auto frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(newTime - currentTime); //gets the elapsed time in seconds
 			currentTime = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now());
 
 			accumulator += frameTime.count();
 
-			while (accumulator >= dt) { //while we have more than one frames-worth of time, use it
+			while (accumulator >= dt) {
 				counter++;
 				printf("counter, accumulator, dt: %d, %f, %f\n", counter, accumulator, dt);
 				gfx.setCameraAngle(input.cameraAngle);
@@ -64,7 +55,7 @@ int main() {
 
 				double standardVel = 1.0 / 100.0;
 				if (input.keys.w) {
-					inputVelocity.z += standardVel; //player should move at 1m/s, this gets executed 60 times per second in theory, so 1/60m/s
+					inputVelocity.z += standardVel;
 				}
 				if (input.keys.a) {
 					inputVelocity.x += -standardVel;
@@ -81,7 +72,6 @@ int main() {
 				if (input.keys.leftShift) {
 					inputVelocity.y += -standardVel;
 				}
-				//need to do these above movements using integrate() with our own integration method, he describe a couple but simplistic euler looks the best for performance/accuracy balance
 
 				camera.velocity = gfx.getProperCameraVelocity(inputVelocity);
 				camera.velocity += accel * dt;
@@ -92,21 +82,21 @@ int main() {
 				camera.position += camera.velocity * (float)dt;
 				gfx.setCameraPos(camera.position);
 				if (input.keys.f && !lastF) {
-					gfx.addObject(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z, 1);
-					test.dimensions = glm::vec3(1, 1, 1);
-					test.velocity = glm::vec3(0, 0, 0);
-					test.position = glm::vec3(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z);
-					boxes.push_back(test);
+					for (int i = 0; i < 100; i++) {
+						gfx.addObject(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z, 1);
+						test.dimensions = glm::vec3(1, 1, 1);
+						test.velocity = glm::vec3(0, 0, 0);
+						test.position = glm::vec3(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z);
+						boxes.push_back(test);
+					}
 				}
 				lastF = input.keys.f;
 
 				accumulator -= dt;
 				t += dt;
-
-				gfx.run();
-				//endTime = time(NULL);
-				//Sleep(frameTimeTarged - (endTime - startTime));
 			}
+
+			gfx.run();
 		}
 	}
 	catch (const std::runtime_error& e) {
