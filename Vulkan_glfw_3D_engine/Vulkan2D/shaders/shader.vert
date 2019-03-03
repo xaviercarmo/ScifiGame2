@@ -34,14 +34,16 @@ out gl_PerVertex {
 };
 
 void main() {
-    gl_Position = ubo.proj * ubo.view /* ubo.model */ * objects.transform[object.index] * vec4(inPosition, 1.0);
-	/*gl_Position.x = objects.transform[object.index][0][0] + objects.transform[object.index][0][1] + objects.transform[object.index][0][2] + objects.transform[object.index][0][3];
-	gl_Position.x += objects.transform[object.index][1][0] + objects.transform[object.index][1][1] + objects.transform[object.index][1][2] + objects.transform[object.index][1][3];
-	gl_Position.x += objects.transform[object.index][2][0] + objects.transform[object.index][2][1] + objects.transform[object.index][2][2] + objects.transform[object.index][2][3];
-	gl_Position.x += objects.transform[object.index][3][0] + objects.transform[object.index][3][1] + objects.transform[object.index][3][2] + objects.transform[object.index][3][3];*/
+	//applying the view matrix, projection matrix, and object matrix to the point
+    gl_Position = ubo.proj * ubo.view * objects.transform[object.index] * vec4(inPosition, 1.0);
+
     fragColor = inColor;
+
 	FragPos = vec3(objects.transform[object.index] * vec4(inPosition, 1.0));
-    Normal = mat3(transpose(inverse(objects.transform[object.index]))) * inNormal;;
+
+    Normal = mat3(transpose(inverse(objects.transform[object.index]))) * inNormal;
+
 	cameraPos = ubo.cameraPos;
+
     fragTexCoord = inTexCoord;
 }

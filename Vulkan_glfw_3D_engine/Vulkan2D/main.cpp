@@ -77,25 +77,24 @@ int main() {
 				}
 				else {
 					gfx.setFreeLook(false);
-					input.cameraAngle = glm::vec3(0,-1,1);
+					input.cameraAngle = glm::vec3(0, -1, 1);
 				}
 
 				camera.velocity = gfx.getProperCameraVelocity(inputVelocity);
 				camera.velocity += accel * dt;
+				camera.velocity *= (float)dt;
 				for (int i = 0; i < boxes.size(); i++) {
 					collisionDetection::correctCollisionBoxes(&camera, &boxes[i]);
 				}
 
-				camera.position += camera.velocity * (float)dt;
+				camera.position += camera.velocity;
 				gfx.setCameraPos(camera.position);
 				if (input.keys.f && !lastF) {
-					for (int i = 0; i < 100; i++) {
-						gfx.addObject(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z, 1);
-						test.dimensions = glm::vec3(1, 1, 1);
-						test.velocity = glm::vec3(0, 0, 0);
-						test.position = glm::vec3(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z);
-						boxes.push_back(test);
-					}
+					gfx.addObject(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z, 1);
+					test.dimensions = glm::vec3(1, 1, 1);
+					test.velocity = glm::vec3(0, 0, 0);
+					test.position = glm::vec3(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z);
+					boxes.push_back(test);
 				}
 				lastF = input.keys.f;
 
