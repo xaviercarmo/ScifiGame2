@@ -4,7 +4,7 @@
 #include <string>
 #include <glm\glm.hpp>
 
-struct keyValues { bool w = false; bool a = false; bool s = false; bool d = false; bool f = false; bool q = false; bool leftShift = false; bool rightShift = false; bool space = false; bool ctrl = false; bool tab = false; bool n1 = false; bool n2 = false; bool n3 = false; bool n4 = false; bool n5 = false; bool n6 = false; bool n7 = false; bool n8 = false; bool n9 = false; bool n0 = false;   bool mouseLeft = false; bool mouseRight = false; bool mouseMiddle = false; bool escape = false; };
+struct keyValues { bool w = false; bool a = false; bool s = false; bool d = false; bool f = false; bool q = false; bool leftShift = false; bool rightShift = false; bool space = false; bool ctrl = false; bool tab = false; bool n1 = false; bool n2 = false; bool n3 = false; bool n4 = false; bool n5 = false; bool n6 = false; bool n7 = false; bool n8 = false; bool n9 = false; bool n0 = false;   bool mouseLeft = false; bool mouseRight = false; bool mouseMiddle = false; bool escape = false; bool alt = false; };
 
 class Input {
 public:

@@ -72,6 +72,13 @@ int main() {
 				if (input.keys.leftShift) {
 					inputVelocity.y += -standardVel;
 				}
+				if (input.keys.alt) {
+					gfx.setFreeLook(true);
+				}
+				else {
+					gfx.setFreeLook(false);
+					input.cameraAngle = glm::vec3(0,-1,1);
+				}
 
 				camera.velocity = gfx.getProperCameraVelocity(inputVelocity);
 				camera.velocity += accel * dt;

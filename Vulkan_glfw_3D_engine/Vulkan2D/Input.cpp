@@ -182,6 +182,12 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 	if (key == GLFW_KEY_0 && action == GLFW_RELEASE) {
 		keys.n0 = false;
 	}
+	if (key == GLFW_KEY_LEFT_ALT && action == GLFW_PRESS) {
+		keys.alt = true;
+	}
+	if (key == GLFW_KEY_LEFT_ALT && action == GLFW_RELEASE) {
+		keys.alt = false;
+	}
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		keys.escape = true;
 	}

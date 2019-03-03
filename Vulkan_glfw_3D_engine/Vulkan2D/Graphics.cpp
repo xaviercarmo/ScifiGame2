@@ -1337,8 +1337,9 @@ void Graphics::updateUniformBuffer(uint32_t currentImage) {
 	up = glm::cross(right, direction);
 
 	UniformBufferObject ubo = {};
-	//ubo.model = glm::rotate(glm::mat4(), 0.0f, glm::vec3(0, 0, 1));
-	ubo.view = glm::lookAt(cameraPosition - direction, cameraPosition, up);
+	float zoom = 4;
+	ubo.view = glm::lookAt(cameraPosition - direction*zoom, cameraPosition, up);
+	
 	ubo.proj = glm::perspective(glm::radians(FOV), swapChainExtent.width / (float)swapChainExtent.height, 0.001f, 1000.0f);
 	ubo.proj[1][1] *= -1;
 	ubo.cameraPos = cameraPosition;
@@ -1686,10 +1687,14 @@ void Graphics::changeCameraPos(float x, float y, float z) {
 
 //Calculates cameras velocity based on direction it is facing
 glm::vec3 Graphics::getProperCameraVelocity(glm::vec3 cameraVel) {
-	glm::vec3 forward = glm::vec3(sin(cameraAngle.x), 0, cos(cameraAngle.x));
-	glm::vec3 vel = cameraVel.x * right * cameraVelocity + glm::vec3(0, cameraVel.y * cameraVelocity, 0) + cameraVel.z * forward * cameraVelocity;
-	vel.y = cameraVel.y * cameraVelocity;
-	return vel;
+	//if (!freeLook) {
+		cameraVel.x *= -1;
+		return cameraVel * cameraVelocity;
+	//}
+	//glm::vec3 forward = glm::vec3(sin(cameraAngle.x), 0, cos(cameraAngle.x));
+	//glm::vec3 vel = cameraVel.x * right * cameraVelocity + glm::vec3(0, cameraVel.y * cameraVelocity, 0) + cameraVel.z * forward * cameraVelocity;
+	//vel.y = cameraVel.y * cameraVelocity;
+	//return vel;
 }
 
 void Graphics::setCameraAngle(glm::vec3 _cameraAngle) {
@@ -1714,6 +1719,10 @@ void Graphics::addObject(float x, float y, float z, int modelIndex) {
 
 glm::vec3 Graphics::getCameraPos() {
 	return cameraPosition;
+}
+
+void Graphics::setFreeLook(bool value){
+	freeLook = value;
 }
 
 void Graphics::clearStorageBuffer() {
