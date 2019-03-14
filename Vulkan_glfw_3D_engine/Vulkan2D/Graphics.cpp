@@ -1239,12 +1239,13 @@ uint32_t Graphics::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags pro
 
 void Graphics::createCommandBuffers() {
 	commandBuffers.resize(swapChainFramebuffers.size());
-
 	VkCommandBufferAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	allocInfo.commandPool = commandPool;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
+
+	vkFreeCommandBuffers(device, commandPool, allocInfo.commandBufferCount, commandBuffers.data()); //added to fix memory leak - seems like this deallocates the memory, but only releases is back to the commandpool to use (not to the system), which is good (i think), can be placed anywhere before here, but not after
 
 	if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
 		throw std::runtime_error("failed to allocate command buffers!");
@@ -1376,7 +1377,6 @@ void Graphics::drawFrame() {
 	}
 
 	objects[0].transformData = glm::translate(glm::mat4(1.0f), cameraPosition);
-
 	updateUniformBuffer(imageIndex);
 	updateStorageBuffer();
 	createCommandBuffers();

@@ -1,5 +1,11 @@
 #pragma once
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/hash.hpp>
+
+#include <vector>
+
 namespace Physics {
 	struct ObjectState
 	{
@@ -22,7 +28,7 @@ namespace Physics {
 	class Engine
 	{
 	public:
-		float gravity = 9.8;
+		float gravity = 9.8f;
 
 		ObjectStateDerivative evaluate(const ObjectState & initial, double t, float dt, const ObjectStateDerivative & d);
 		float acceleration(const ObjectState& state, double t);

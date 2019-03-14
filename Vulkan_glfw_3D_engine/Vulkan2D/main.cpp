@@ -1,6 +1,6 @@
 #include "Graphics.h"
-#include "Input.h"
-#include "CollisionDetection.h"
+#include "Character.h"
+#include "Polyhedron.h"
 #include <ctime>
 #include <windows.h>
 #include <chrono>
@@ -12,28 +12,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	input.key_callback(key, scancode, action, mods);
 }
 
+const bool debug = false;
+
 int main() {
 	try {
 
 		gfx.init();
 		input.init(gfx.getWindowPointer());
 		glfwSetKeyCallback(gfx.getWindowPointer(), key_callback);
+
 		bool lastF;
-		std::vector<CollisionBox> boxes;
-		CollisionBox test;
-		test.dimensions = glm::vec3(1, 1, 1);
-		test.velocity = glm::vec3(0, 0, 0);
-		test.position = glm::vec3(0, 0, 0);
-		boxes.push_back(test);
-		glm::vec3 inputVelocity = glm::vec3(0, 0, 0);
-		CollisionBox camera;
-		camera.dimensions = glm::vec3(0.01, 0.01, 0.01);
-		camera.velocity = glm::vec3(0, 0, 0);
-		bool lastSpace;
+		std::vector<Polyhedron> polyhedrons;
+		Polyhedron test(glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), true); //later implement cube class which is child of polyhedron, these are all cubes
+		polyhedrons.push_back(test);
+
+		Character player1(glm::vec3(0.01, 0.01, 0.01), glm::vec3(0, 0, 0));
 
 		double t = 0.0;
-		const double dt = 1000.0 / 60.0;
-		float accel = 0;
+		const float dt = 1000.0f / 60.0f;
 
 		auto currentTime = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now());
 		double accumulator = 0.0;
@@ -48,53 +44,21 @@ int main() {
 
 			while (accumulator >= dt) {
 				counter++;
-				printf("counter, accumulator, dt: %d, %f, %f\n", counter, accumulator, dt);
+
+				if (debug) {
+					printf("counter, accumulator, dt: %d, %f, %f\n", counter, accumulator, dt);
+				}
+
 				gfx.setCameraAngle(input.cameraAngle);
 				input.run();
-				inputVelocity = glm::vec3(0, 0, 0);
 
-				double standardVel = 1.0 / 100.0;
-				if (input.keys.w) {
-					inputVelocity.z += standardVel;
-				}
-				if (input.keys.a) {
-					inputVelocity.x += -standardVel;
-				}
-				if (input.keys.s) {
-					inputVelocity.z += -standardVel;
-				}
-				if (input.keys.d) {
-					inputVelocity.x += standardVel;
-				}
-				if (input.keys.space) {
-					inputVelocity.y += standardVel;
-				}
-				if (input.keys.leftShift) {
-					inputVelocity.y += -standardVel;
-				}
-				if (input.keys.alt) {
-					gfx.setFreeLook(true);
-				}
-				else {
-					gfx.setFreeLook(false);
-					input.cameraAngle = glm::vec3(0, -1, 1);
-				}
-
-				camera.velocity = gfx.getProperCameraVelocity(inputVelocity);
-				camera.velocity += accel * dt;
-				camera.velocity *= (float)dt;
-				for (int i = 0; i < boxes.size(); i++) {
-					collisionDetection::correctCollisionBoxes(&camera, &boxes[i]);
-				}
-
-				camera.position += camera.velocity;
-				gfx.setCameraPos(camera.position);
+				player1.receiveInput(input.keys, gfx);
+				player1.applyPhysics(dt, polyhedrons);
+				
+				gfx.setCameraPos(player1.position);
 				if (input.keys.f && !lastF) {
 					gfx.addObject(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z, 1);
-					test.dimensions = glm::vec3(1, 1, 1);
-					test.velocity = glm::vec3(0, 0, 0);
-					test.position = glm::vec3(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z);
-					boxes.push_back(test);
+					polyhedrons.push_back(Polyhedron(glm::vec3(1, 1, 1), glm::vec3(gfx.getCameraPos().x, gfx.getCameraPos().y, gfx.getCameraPos().z), true)); //change this to push_back(Polyhedron(...)), unless addObject linked to test somehow
 				}
 				lastF = input.keys.f;
 
