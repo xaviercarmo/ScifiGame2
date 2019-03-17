@@ -10,7 +10,7 @@ namespace globals
 	const float dtSeconds = dt / 1000.0f;
 
 	float gravityAccel = -0.98f;
-	std::vector<Polyhedron> polyhedrons;// { Polyhedron{ glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), 100, true } };
+	std::vector<Polyhedron> polyhedrons;
 	
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 		globals::input.key_callback(key, scancode, action, mods);

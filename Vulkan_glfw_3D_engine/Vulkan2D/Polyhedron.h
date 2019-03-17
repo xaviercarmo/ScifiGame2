@@ -31,7 +31,10 @@ public:
 
 	void applyContactFriction(float velocity, int direction, float& force);
 	void handleFrictionFlip(float& velocity, int oldDirection, int newDirection, float force);
+
 protected:
 	float kineticFrictionConstant;
 	float staticFrictionConstant;
+
+	bool baseInContact();
 };

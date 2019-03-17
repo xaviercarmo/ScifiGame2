@@ -3,6 +3,7 @@
 
 Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
+	//globals::gfx.addObject(position.x, position.y, position.z, 3);
 	setStaticFrictionConstant(0.9);
 	setKineticFrictionConstant(0.8);
 	moveForce = 60;
@@ -10,42 +11,36 @@ Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Pol
 
 void Character::receiveInput()
 {
-	if (globals::input.keys.w)
+	if (globals::input.keys.w && baseInContact())
 	{
 		force.z += moveForce;
 	}
 
-	if (globals::input.keys.a)
+	if (globals::input.keys.a && baseInContact())
 	{
 		force.x += -moveForce;
 	}
 
-	if (globals::input.keys.s)
+	if (globals::input.keys.s && baseInContact())
 	{
 		force.z += -moveForce;
 	}
 
-	if (globals::input.keys.d)
+	if (globals::input.keys.d && baseInContact())
 	{
 		force.x += moveForce;
 	}
 
-	if (globals::input.keys.space)
+	if (globals::input.keys.space && baseInContact())
 	{
-		//if (!jumped)
-		if (touchingFloor())
-		{
-			jump();
-		}
-	}
-	else
-	{
-		jumped = false;
+		jump();
 	}
 
 	if (globals::input.keys.leftShift)
 	{
-		
+		force *= 0;
+		velocity *= 0;
+		position = glm::vec3{ 0.5, 2, 0.5 };
 	}
 
 	if (globals::input.keys.alt)
@@ -61,22 +56,5 @@ void Character::receiveInput()
 
 void Character::jump()
 {
-	jumped = true;
 	force.y += jumpForce;
-}
-
-bool Character::touchingFloor()
-{
-	for (auto polyhedron : globals::polyhedrons)
-	{
-		if (collisionDetection::detectRectangleCollision(position.x, position.z, dimensions.x, dimensions.z, polyhedron.position.x, polyhedron.position.z, polyhedron.dimensions.x, polyhedron.dimensions.z))
-		{
-			if (position.y == polyhedron.position.y + polyhedron.dimensions.y)
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
 }

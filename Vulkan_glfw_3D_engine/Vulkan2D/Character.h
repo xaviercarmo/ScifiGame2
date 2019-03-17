@@ -16,7 +16,4 @@ private:
 	double moveSpeed = 0.5;
 	float moveForce = 50;
 	float jumpForce = mass * -globals::gravityAccel * 15;
-	bool jumped = false;
-
-	bool touchingFloor();
 };

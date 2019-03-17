@@ -6,11 +6,6 @@
 using std::chrono::time_point_cast;
 using std::chrono::duration_cast;
 
-
-//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-//	globals::input.key_callback(key, scancode, action, mods);
-//}
-
 const bool debug = false;
 
 int main() {
@@ -22,12 +17,15 @@ int main() {
 
 		bool lastF;
 
-		Character player1(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5, 1.5, 0.5), 60);
+		//Character player1(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5, 2, 0.5), 60);
+		Character player1(glm::vec3(0.01, 0.01, 0.01), glm::vec3(0.5, 2, 0.5), 60);
 
 		double t = 0.0;
 		auto currentTime = time_point_cast<ms>(Time::now());
 		double accumulator = 0.0;
 		
+		glm::vec3 cameraOffset{ 0, 0, 0 };
+
 		while (!globals::gfx.shouldClose) {
 			auto newTime = time_point_cast<ms>(Time::now());
 			auto frameTime = duration_cast<ms>(newTime - currentTime);
@@ -42,7 +40,7 @@ int main() {
 				player1.receiveInput();
 				player1.applyPhysics();
 				
-				globals::gfx.setCameraPos(player1.position);
+				globals::gfx.setCameraPos(player1.position + cameraOffset);
 				if (globals::input.keys.f && !lastF) {
 					globals::polyhedrons.push_back(Polyhedron(glm::vec3(1, 1, 1), glm::vec3(globals::gfx.getCameraPos().x, globals::gfx.getCameraPos().y, globals::gfx.getCameraPos().z), 100, true));
 				}

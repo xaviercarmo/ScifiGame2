@@ -25,20 +25,26 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 	//if (surfaceChanged())
 	//setStaticFrictionConstant(newVal); //later, can evaluate the surface object is on and change friction constants so these setters actually do something (also don't need to evaluate them unless the terrain has changed, since we have one terrain ive ommitted them)
 
-	//force.y += mass * globals::gravityAccel;
+	force.y += mass * globals::gravityAccel;
 	glm::vec3 vecDirections = getVecDirections(velocity);
 	float absForceX = abs(force.x);
 	float absForceZ = abs(force.z);
+	bool baseTouching = baseInContact();
 
-	applyContactFriction(velocity.x, vecDirections.x, force.x);
-	applyContactFriction(velocity.z, vecDirections.z, force.z);
+	if (baseTouching) {
+		applyContactFriction(velocity.x, vecDirections.x, force.x);
+		applyContactFriction(velocity.z, vecDirections.z, force.z);
+	}
 
 	velocity += (force / mass) * globals::dtSeconds;
 
 	glm::vec3 newVecDirections = getVecDirections(velocity);
 
-	handleFrictionFlip(velocity.x, vecDirections.x, newVecDirections.x, force.x);
-	handleFrictionFlip(velocity.z, vecDirections.z, newVecDirections.z, force.z);
+	if (baseTouching)
+	{
+		handleFrictionFlip(velocity.x, vecDirections.x, newVecDirections.x, force.x);
+		handleFrictionFlip(velocity.z, vecDirections.z, newVecDirections.z, force.z);
+	}
 
 	for (auto polyhedron : globals::polyhedrons)
 	{
@@ -112,4 +118,17 @@ glm::vec3 Polyhedron::getVecDirections(glm::vec3 vec)
 	}
 
 	return result;
+}
+
+bool Polyhedron::baseInContact()
+{
+	for (auto polyhedron : globals::polyhedrons)
+	{
+		if (position.y == polyhedron.position.y + polyhedron.dimensions.y && collisionDetection::detectRectangleCollision(position.x, position.z, dimensions.x, dimensions.z, polyhedron.position.x, polyhedron.position.z, polyhedron.dimensions.x, polyhedron.dimensions.z))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
