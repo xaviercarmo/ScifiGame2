@@ -1,42 +1,79 @@
 #include "Character.h"
+#include "CollisionDetection.h"
 
-void Character::receiveInput(keyValues inputKeys, Graphics& gfx)
+Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
-	resetVel();
+}
 
-	if (inputKeys.w) {
-		velocity.z += moveSpeed;
+void Character::receiveInput()
+{
+	if (globals::input.keys.w)
+	{
+		force.z += moveForce;
 	}
-	if (inputKeys.a) {
-		velocity.x += -moveSpeed;
+
+	if (globals::input.keys.a)
+	{
+		force.x += -moveForce;
 	}
-	if (inputKeys.s) {
-		velocity.z += -moveSpeed;
+
+	if (globals::input.keys.s)
+	{
+		force.z += -moveForce;
 	}
-	if (inputKeys.d) {
-		velocity.x += moveSpeed;
+
+	if (globals::input.keys.d)
+	{
+		force.x += moveForce;
 	}
-	if (inputKeys.space) {
-		velocity.y += moveSpeed;
+
+	if (globals::input.keys.space)
+	{
+		//if (!jumped)
+		if (touchingFloor())
+		{
+			jump();
+		}
 	}
-	if (inputKeys.leftShift) {
-		velocity.y += -moveSpeed;
+	else
+	{
+		jumped = false;
 	}
-	if (inputKeys.alt) {
-		gfx.setFreeLook(true);
+
+	if (globals::input.keys.leftShift)
+	{
+		
 	}
-	else {
-		gfx.setFreeLook(false);
-		gfx.setCameraAngle(glm::vec3(0, -1, 1));
+
+	if (globals::input.keys.alt)
+	{
+		globals::gfx.setFreeLook(true);
+	}
+	else
+	{
+		globals::gfx.setFreeLook(false);
+		globals::gfx.setCameraAngle(glm::vec3(0, -0.25, 1));
 	}
 }
 
 void Character::jump()
 {
-	//velocity.y = 
+	jumped = true;
+	force.y += jumpForce;
 }
 
-void Character::resetVel()
+bool Character::touchingFloor()
 {
-	velocity *= 0;
+	for (auto polyhedron : globals::polyhedrons)
+	{
+		if (collisionDetection::detectRectangleCollision(position.x, position.z, dimensions.x, dimensions.z, polyhedron.position.x, polyhedron.position.z, polyhedron.dimensions.x, polyhedron.dimensions.z))
+		{
+			if (position.y == polyhedron.position.y + polyhedron.dimensions.y)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

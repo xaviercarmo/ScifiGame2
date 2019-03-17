@@ -1245,7 +1245,7 @@ void Graphics::createCommandBuffers() {
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
 
-	vkFreeCommandBuffers(device, commandPool, allocInfo.commandBufferCount, commandBuffers.data()); //added to fix memory leak - seems like this deallocates the memory, but only releases is back to the commandpool to use (not to the system), which is good (i think), can be placed anywhere before here, but not after
+	vkFreeCommandBuffers(device, commandPool, allocInfo.commandBufferCount, commandBuffers.data()); //added to fix memory leak - seems like this deallocates the memory, but only releases it back to the commandpool to use (not to the system), which is good (i think), can be placed anywhere before here, but not after
 
 	if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
 		throw std::runtime_error("failed to allocate command buffers!");
@@ -1666,11 +1666,11 @@ void Graphics::loadModels()
 
 void Graphics::loadObjects() {
 	addObject(0, 0, 0, 3);
-	addObject(0, 0, 0, 1);
-	addObject(3, 0.1, 1, 0);
-	addObject(5, 0.1, 0, 1);
-	addObject(7, 0.1, 0, 0);
-	addObject(9, 0.1, 2, 1);
+	//addObject(0, 0, 0, 0);
+	//addObject(3, 0.1, 1, 0);
+	//addObject(5, 0.1, 0, 1);
+	//addObject(7, 0.1, 0, 0);
+	//addObject(9, 0.1, 2, 1);
 }
 
 void Graphics::setUpCamera() {

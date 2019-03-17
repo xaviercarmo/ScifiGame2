@@ -1,24 +1,22 @@
 #pragma once
-#include "Polyhedron.h"
-#include "Graphics.h"
-#include "Input.h"
+#include "Globals.h"
 
-class Character: public Polyhedron {
+class Character :
+	public Polyhedron
+{
 public:
-	//character traits (think enemies can be extensions of character
-	//... more later, not necessary now
+	int health = 100;
 
-	//constructor
-	explicit Character(glm::vec3 dimensions, glm::vec3 position) : Polyhedron(dimensions, position, false)
-	{}
+	explicit Character(glm::vec3 dimensions, glm::vec3 position, float mass);
 
 	void jump();
 
-	void receiveInput(keyValues inputKeys, Graphics& gfx);
-
-	void resetVel();
+	void receiveInput();
 private:
-	int health = 100;
-	float moveSpeed = 1.0f / 100.0f;
-	//... more later, not necessary now
+	double moveSpeed = 0.5;
+	float moveForce = 50;
+	float jumpForce = mass * -globals::gravityAccel * 15;
+	bool jumped = false;
+
+	bool touchingFloor();
 };

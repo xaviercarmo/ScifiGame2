@@ -8,10 +8,6 @@ namespace collisionDetection {
 		return false;
 	}
 
-	//bool detectSphereOnRectangleCollision() {
-		//need to talk to jack, think we should introduce a shapes library, as well as a generic shapes class which other shapes can inherit from (or rather polygons, e.g. sphere, cube, etc)
-	//}
-
 	void correctCollisionBoxes(CollisionBox* b1, CollisionBox* b2) {
 		//collision within xy
 		if (detectRectangleCollision(b1->position.x, b1->position.y, b1->dimensions.x, b1->dimensions.y, b2->position.x, b2->position.y, b2->dimensions.x, b2->dimensions.y)) {
@@ -58,40 +54,43 @@ namespace collisionDetection {
 	void correctPolyhedrons(Polyhedron* p1, Polyhedron* p2)
 	{
 		//collision within xy
-		if (detectRectangleCollision(p1->position.x, p1->position.y, p1->dimensions.x, p1->dimensions.y, p2->position.x, p2->position.y, p2->dimensions.x, p2->dimensions.y)) {
-			//from z negative side
-			if (p1->position.z >= p2->position.z + p2->dimensions.z && p1->position.z + p1->velocity.z < p2->position.z + p2->dimensions.z) {
+		if (detectRectangleCollision(p1->position.x, p1->position.y, p1->dimensions.x, p1->dimensions.y, p2->position.x, p2->position.y, p2->dimensions.x, p2->dimensions.y))
+		{
+			if (p1->position.z >= p2->position.z + p2->dimensions.z && p1->position.z + p1->velocity.z < p2->position.z + p2->dimensions.z)
+			{
 				p1->velocity.z = 0;
 				p1->position.z = p2->position.z + p2->dimensions.z;
 			}
-			//from z negative side
-			if (p1->position.z + p1->dimensions.z <= p2->position.z && p1->position.z + p1->dimensions.z + p1->velocity.z > p2->position.z) {
+			else if (p1->position.z + p1->dimensions.z <= p2->position.z && p1->position.z + p1->dimensions.z + p1->velocity.z > p2->position.z)
+			{
 				p1->velocity.z = 0;
 				p1->position.z = p2->position.z - p1->dimensions.z;
 			}
 		}
 		//collision within xz
-		if (detectRectangleCollision(p1->position.x, p1->position.z, p1->dimensions.x, p1->dimensions.z, p2->position.x, p2->position.z, p2->dimensions.x, p2->dimensions.z)) {
-			//from y negative side
-			if (p1->position.y >= p2->position.y + p2->dimensions.y && p1->position.y + p1->velocity.y < p2->position.y + p2->dimensions.y) {
+		if (detectRectangleCollision(p1->position.x, p1->position.z, p1->dimensions.x, p1->dimensions.z, p2->position.x, p2->position.z, p2->dimensions.x, p2->dimensions.z))
+		{
+			if (p1->position.y >= p2->position.y + p2->dimensions.y && p1->position.y + p1->velocity.y < p2->position.y + p2->dimensions.y)
+			{
 				p1->velocity.y = 0;
 				p1->position.y = p2->position.y + p2->dimensions.y;
 			}
-			//from y negative side
-			if (p1->position.y + p1->dimensions.y - 0.01f <= p2->position.y && p1->position.y + p1->dimensions.y + p1->velocity.y > p2->position.y) {
+			else if (p1->position.y + p1->dimensions.y - 0.01f <= p2->position.y && p1->position.y + p1->dimensions.y + p1->velocity.y > p2->position.y)
+			{
 				p1->velocity.y = 0;
 				p1->position.y = p2->position.y - p1->dimensions.y;
 			}
 		}
 		//collision within zy
-		if (detectRectangleCollision(p1->position.z, p1->position.y, p1->dimensions.z, p1->dimensions.y, p2->position.z, p2->position.y, p2->dimensions.z, p2->dimensions.y)) {
-			//from x positive side
-			if (p1->position.x >= p2->position.x + p2->dimensions.x && p1->position.x + p1->velocity.x < p2->position.x + p2->dimensions.x) {
+		if (detectRectangleCollision(p1->position.z, p1->position.y, p1->dimensions.z, p1->dimensions.y, p2->position.z, p2->position.y, p2->dimensions.z, p2->dimensions.y))
+		{
+			if (p1->position.x >= p2->position.x + p2->dimensions.x && p1->position.x + p1->velocity.x < p2->position.x + p2->dimensions.x)
+			{
 				p1->velocity.x = 0;
 				p1->position.x = p2->position.x + p2->dimensions.x;
 			}
-			//from x negative side
-			if (p1->position.x + p1->dimensions.x <= p2->position.x && p1->position.x + p1->dimensions.x + p1->velocity.x > p2->position.x) {
+			else if (p1->position.x + p1->dimensions.x <= p2->position.x && p1->position.x + p1->dimensions.x + p1->velocity.x > p2->position.x)
+			{
 				p1->velocity.x = 0;
 				p1->position.x = p2->position.x - p1->dimensions.x;
 			}
