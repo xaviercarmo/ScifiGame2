@@ -4,15 +4,26 @@
 
 Polyhedron::Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, bool stationary) : dimensions(dimensions), position(position), mass(mass), stationary(stationary)
 {
-	setPositiveStaticFrictionForce();
-	setPositiveKineticFrictionForce();
+	setStaticFrictionConstant(0.8);
+	setKineticFrictionConstant(0.6);
+}
+
+void Polyhedron::setStaticFrictionConstant(float newVal)
+{
+	staticFrictionConstant = newVal >= kineticFrictionConstant ? newVal : staticFrictionConstant; //should throw invalid arg exception probably
+	positiveStaticFrictionForce = staticFrictionConstant * (mass * -globals::gravityAccel); //this assumes you are on a horizontal plane, will need to be adjusted (has to take perp. component of normal force) when we start rotating things
+}
+
+void Polyhedron::setKineticFrictionConstant(float newVal)
+{
+	kineticFrictionConstant = newVal <= staticFrictionConstant && newVal >= 0 ? newVal : kineticFrictionConstant;
+	positiveKineticFrictionForce = kineticFrictionConstant * (mass * -globals::gravityAccel);
 }
 
 void Polyhedron::applyPhysics() //possibly this kind of physics is better for objects, projectiles etc. but not for humanoids (as we dont move "smoothly" and this might be overkill
 {
 	//if (surfaceChanged())
-	//setPositiveStaticFrictionForce(); //later, can evaluate the surface object is on and change friction constants so these setters actually do something (also don't need to evaluate them unless the terrain has changed, since we have one terrain ive ommitted them)
-	//setPositiveKineticFrictionForce();
+	//setStaticFrictionConstant(newVal); //later, can evaluate the surface object is on and change friction constants so these setters actually do something (also don't need to evaluate them unless the terrain has changed, since we have one terrain ive ommitted them)
 
 	//force.y += mass * globals::gravityAccel;
 	glm::vec3 vecDirections = getVecDirections(velocity);
@@ -42,16 +53,6 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 	//printf("vel x %f, vel z %f\n", velocity.x, velocity.z);
 
 	force *= 0; //reset forces, anything that wants to continue to apply a force can do so at its own leisure lol
-}
-
-
-void Polyhedron::setPositiveStaticFrictionForce() {
-	positiveStaticFrictionForce = staticFrictionConstant * (mass * -globals::gravityAccel);
-}
-
-void Polyhedron::setPositiveKineticFrictionForce() {
-	//this assumes you are on a horizontal plane, will need to be adjusted (has to take perp. component of normal force) when we start rotating things
-	positiveKineticFrictionForce = kineticFrictionConstant * (mass * -globals::gravityAccel);
 }
 
 void Polyhedron::applyContactFriction(float velocity, int direction, float& force)

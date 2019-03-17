@@ -3,6 +3,9 @@
 
 Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
+	setStaticFrictionConstant(0.9);
+	setKineticFrictionConstant(0.8);
+	moveForce = 60;
 }
 
 void Character::receiveInput()

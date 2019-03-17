@@ -13,16 +13,10 @@ public:
 	glm::vec3 force{ 0, 0, 0 };
 	float mass;
 
-	float kineticFrictionConstant = 0.6;
-	float staticFrictionConstant = 0.8;
-
-	float positiveStaticFrictionForce = 0;
-	float positiveKineticFrictionForce = 0;
+	float positiveStaticFrictionForce = 0.0;
+	float positiveKineticFrictionForce = 0.0;
 
 	glm::vec3 flippedDirections{ false, false, false };
-
-	glm::vec3 velocityTransform{ 0, 0, 0 };
-	glm::vec3 accelerationTransform{ 0, 0, 0 };
 
 	bool stationary = true;
 
@@ -30,11 +24,14 @@ public:
 
 	void applyPhysics();
 
-	void setPositiveStaticFrictionForce();
-	void setPositiveKineticFrictionForce();
+	void setStaticFrictionConstant(float newVal);
+	void setKineticFrictionConstant(float newVal);
 
 	glm::vec3 getVecDirections(glm::vec3 vec);
 
 	void applyContactFriction(float velocity, int direction, float& force);
 	void handleFrictionFlip(float& velocity, int oldDirection, int newDirection, float force);
+protected:
+	float kineticFrictionConstant;
+	float staticFrictionConstant;
 };
