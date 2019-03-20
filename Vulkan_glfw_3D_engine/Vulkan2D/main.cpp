@@ -1,5 +1,7 @@
 #include "Globals.h"
 #include "Character.h"
+#include "Cube.h"
+
 #include <windows.h>
 #include <chrono>
 
@@ -18,13 +20,13 @@ int main() {
 		bool lastF;
 
 		//Character player1(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5, 2, 0.5), 60);
-		Character player1(glm::vec3(0.01, 0.01, 0.01), glm::vec3(0.5, 2, 0.5), 60);
+		Character player1(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
 
 		double t = 0.0;
 		auto currentTime = time_point_cast<ms>(Time::now());
 		double accumulator = 0.0;
 		
-		glm::vec3 cameraOffset{ 0, 0, 0 };
+		glm::vec3 cameraOffset{ 0, 2, 0 };
 
 		while (!globals::gfx.shouldClose) {
 			auto newTime = time_point_cast<ms>(Time::now());
@@ -42,7 +44,7 @@ int main() {
 				
 				globals::gfx.setCameraPos(player1.position + cameraOffset);
 				if (globals::input.keys.f && !lastF) {
-					globals::polyhedrons.push_back(Polyhedron(glm::vec3(1, 1, 1), glm::vec3(globals::gfx.getCameraPos().x, globals::gfx.getCameraPos().y, globals::gfx.getCameraPos().z), 100, true));
+					globals::polyhedrons.push_back(Cube(glm::vec3(1, 1, 1), glm::vec3(globals::gfx.getCameraPos().x, globals::gfx.getCameraPos().y, globals::gfx.getCameraPos().z), 100));
 				}
 				lastF = globals::input.keys.f;
 

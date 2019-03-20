@@ -6,7 +6,7 @@ namespace globals
 	Graphics gfx;
 	Input input;
 
-	const double dt = 1000.0 / 60.0;
+	const float dt = 1000.0f / 60.0f;
 	const float dtSeconds = dt / 1000.0f;
 
 	float gravityAccel = -0.98f;
@@ -25,16 +25,15 @@ namespace globals
 		polyhedrons = std::vector<Polyhedron>
 		{
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(1.2, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(2.4, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(3.6, 0, 0), 100 },
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(1.6, 0, 0), 100 },
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(3.2, 0, 0), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(4.8, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(6, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(7.2, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(8.4, 0, 0), 100 },
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(6.4, 0, 0), 100 },
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(8, 0, 0), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(9.6, 0, 0), 100 },
-			Cube{ glm::vec3(1, 1, 1), glm::vec3(10.8, 0, 0), 100 }
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(11.2, 0, 0), 100 },
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(12.8, 0, 0), 100 },
+			Cube{ glm::vec3(1, 1, 1), glm::vec3(14.4, 0, 0), 100 }
 		};
 	}
-
 }

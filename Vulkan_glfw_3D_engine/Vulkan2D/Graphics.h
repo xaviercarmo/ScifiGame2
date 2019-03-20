@@ -10,8 +10,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/hash.hpp>
 
-
-
 #include <vector>
 #include <array>
 #include <set>
@@ -152,7 +150,11 @@ public:
 
 	GLFWwindow* getWindowPointer();
 
-	void addObject(float x, float y, float z, int modelIndex);
+	int addObject(float x, float y, float z, int modelIndex);
+
+	//Object* addObject(float x, float y, float z, int modelIndex);
+
+	Object* getObjectAtIndex(int i);
 
 	glm::vec3 getCameraPos();
 

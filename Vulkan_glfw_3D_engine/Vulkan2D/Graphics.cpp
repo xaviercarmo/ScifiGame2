@@ -1643,7 +1643,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Graphics::debugCallback(VkDebugReportFlagsEXT fla
 
 void Graphics::loadResources()
 {
-	loadModel("models/testUV.obj", glm::vec4(0.9, 0.1, 0.1, 1), 1);
+	loadModel("models/testUV.obj", glm::vec4(0.9, 0.1, 0.1, 1), 0.2);
 	loadModel("models/test3.obj", glm::vec4(0.2, 0.4, 0.9, 1), 1);
 	loadModel("models/xyzOrigin.obj", glm::vec4(0.1, 0.9, 0.1, 1), 1);
 	loadModel("models/small_sphere.obj", glm::vec4(0.7, 0.9, 0.1, 1), 1);
@@ -1705,12 +1705,33 @@ GLFWwindow* Graphics::getWindowPointer() {
 	return window;
 }
 
-void Graphics::addObject(float x, float y, float z, int modelIndex) {
-	if (objects.size() >= MAX_OBJECTS) { return; }
+int Graphics::addObject(float x, float y, float z, int modelIndex) {
+	if (objects.size() >= MAX_OBJECTS) { return NULL; }
+
 	objects.push_back(Object());
 	objects[objects.size() - 1].model = &models[modelIndex];
 	objects[objects.size() - 1].transformData = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+
+	return objects.size() - 1;
 }
+
+//Object* Graphics::addObject(float x, float y, float z, int modelIndex) {
+//	if (objects.size() >= MAX_OBJECTS) { return NULL; }
+//
+//	objects.push_back(Object());
+//	objects[objects.size() - 1].model = &models[modelIndex];
+//	objects[objects.size() - 1].transformData = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+//	
+//	return &(objects[objects.size() - 1]);
+//}
+
+Object* Graphics::getObjectAtIndex(int i)
+{
+	if (i >= 0 && i < objects.size())
+	{
+		return &objects[i];
+	}
+} //cannot just store reference to object (as commented out addObject does) because i think on vector resize the memory addresses get changed
 
 glm::vec3 Graphics::getCameraPos() {
 	return cameraPosition;

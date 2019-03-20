@@ -3,9 +3,11 @@
 
 Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
-	//globals::gfx.addObject(position.x, position.y, position.z, 3);
-	setStaticFrictionConstant(0.9);
-	setKineticFrictionConstant(0.8);
+	//vkObject = globals::gfx.addObject(position.x - dimensions.x / 2, position.y - dimensions.y / 2, position.z - dimensions.z / 2, 3);
+	vkObjectIndex = globals::gfx.addObject(position.x, position.y, position.z, 0);
+
+	setStaticFrictionConstant(0.9f);
+	setKineticFrictionConstant(0.8f);
 	moveForce = 60;
 }
 
@@ -41,6 +43,7 @@ void Character::receiveInput()
 		force *= 0;
 		velocity *= 0;
 		position = glm::vec3{ 0.5, 2, 0.5 };
+		setVkObjectPosition(position);
 	}
 
 	if (globals::input.keys.alt)

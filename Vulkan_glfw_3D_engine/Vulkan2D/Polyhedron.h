@@ -1,4 +1,5 @@
 #pragma once
+#include "Graphics.h"
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -24,17 +25,22 @@ public:
 
 	void applyPhysics();
 
-	void setStaticFrictionConstant(float newVal);
-	void setKineticFrictionConstant(float newVal);
-
-	glm::vec3 getVecDirections(glm::vec3 vec);
-
-	void applyContactFriction(float velocity, int direction, float& force);
-	void handleFrictionFlip(float& velocity, int oldDirection, int newDirection, float force);
-
 protected:
 	float kineticFrictionConstant;
 	float staticFrictionConstant;
 
+	//Object* vkObject;
+	int vkObjectIndex;
+
 	bool baseInContact();
+	
+	glm::ivec3 getVecDirections(glm::vec3 vec);
+	
+	void setStaticFrictionConstant(float newVal);
+	void setKineticFrictionConstant(float newVal);
+
+	void applyContactFriction(float velocity, int direction, float& force);
+	void handleFrictionFlip(float& velocity, int oldDirection, int newDirection, float force);
+
+	void setVkObjectPosition(glm::vec3 position);
 };

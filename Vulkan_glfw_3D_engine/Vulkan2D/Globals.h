@@ -1,13 +1,12 @@
-#include "Graphics.h"
-#include "Input.h"
 #include "Polyhedron.h"
+#include "Input.h"
 
 namespace globals
 {
 	extern Graphics gfx;
 	extern Input input;
 
-	extern const double dt;
+	extern const float dt;
 	extern const float dtSeconds;
 
 	extern float gravityAccel;

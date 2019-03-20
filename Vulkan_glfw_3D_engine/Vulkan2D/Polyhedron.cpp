@@ -4,8 +4,11 @@
 
 Polyhedron::Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, bool stationary) : dimensions(dimensions), position(position), mass(mass), stationary(stationary)
 {
-	setStaticFrictionConstant(0.8);
-	setKineticFrictionConstant(0.6);
+	//vkObject = NULL;
+	vkObjectIndex = -1;
+
+	setStaticFrictionConstant(0.8f);
+	setKineticFrictionConstant(0.6f);
 }
 
 void Polyhedron::setStaticFrictionConstant(float newVal)
@@ -26,7 +29,7 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 	//setStaticFrictionConstant(newVal); //later, can evaluate the surface object is on and change friction constants so these setters actually do something (also don't need to evaluate them unless the terrain has changed, since we have one terrain ive ommitted them)
 
 	force.y += mass * globals::gravityAccel;
-	glm::vec3 vecDirections = getVecDirections(velocity);
+	glm::ivec3 vecDirections = getVecDirections(velocity);
 	float absForceX = abs(force.x);
 	float absForceZ = abs(force.z);
 	bool baseTouching = baseInContact();
@@ -38,7 +41,7 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 
 	velocity += (force / mass) * globals::dtSeconds;
 
-	glm::vec3 newVecDirections = getVecDirections(velocity);
+	glm::ivec3 newVecDirections = getVecDirections(velocity);
 
 	if (baseTouching)
 	{
@@ -52,6 +55,8 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 	}
 
 	position += velocity * glm::vec3{ -1, 1, 1 };
+
+	setVkObjectPosition(position);
 
 	//velocity.x *= 0.95;
 	//velocity.z *= 0.95;
@@ -86,9 +91,9 @@ void Polyhedron::handleFrictionFlip(float& velocity, int oldDirection, int newDi
 	}
 }
 
-glm::vec3 Polyhedron::getVecDirections(glm::vec3 vec)
+glm::ivec3 Polyhedron::getVecDirections(glm::vec3 vec)
 {
-	glm::vec3 result{ 0, 0, 0 };
+	glm::ivec3 result{ 0, 0, 0 };
 
 	if (vec.x > 0)
 	{
@@ -131,4 +136,13 @@ bool Polyhedron::baseInContact()
 	}
 
 	return false;
+}
+
+void Polyhedron::setVkObjectPosition(glm::vec3 position)
+{
+	//globals::gfx.getObjectAtIndex(vkObjectIndex)->transformData = glm::translate(glm::mat4(1.0f), glm::vec3{ position.x + dimensions.x / 2, position.y + dimensions.y / 2, position.z + dimensions.z / 2 });
+	globals::gfx.getObjectAtIndex(vkObjectIndex)->transformData = glm::translate(glm::mat4(1.0f), glm::vec3{ position.x, position.y, position.z });
+
+	//vkObject->transformData = glm::translate(glm::mat4(1.0f), position);
+	//vkObject->transformData = glm::translate(glm::mat4(1.0f), glm::vec3{ position.x - dimensions.x / 2, position.y - dimensions.y / 2, position.z - dimensions.z / 2 });
 }
