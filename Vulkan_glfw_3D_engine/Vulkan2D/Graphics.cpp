@@ -1402,7 +1402,7 @@ void Graphics::updateUniformBuffer(uint32_t currentImage) {
 	
 	ubo.proj = glm::perspective(glm::radians(FOV), swapChainExtent.width / (float)swapChainExtent.height, 0.001f, 1000.0f);
 	ubo.proj[1][1] *= -1;
-	ubo.cameraPos = cameraPosition;
+	ubo.cameraPos = glm::vec3(10,10,10);// cameraPosition;
 	//static auto startTime = std::chrono::high_resolution_clock::now();
 
 	//auto currentTime = std::chrono::high_resolution_clock::now();
