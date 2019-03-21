@@ -81,19 +81,23 @@ namespace collisionDetection {
 				p1->position.y = p2->position.y - p1->dimensions.y;
 			}
 		}
-		//collision within zy
+
+		//collision within zy, looks weird because we flip x, and so our velocity is flipped also
 		if (detectRectangleCollision(p1->position.z, p1->position.y, p1->dimensions.z, p1->dimensions.y, p2->position.z, p2->position.y, p2->dimensions.z, p2->dimensions.y))
 		{
-			if (p1->position.x >= p2->position.x + p2->dimensions.x && p1->position.x + p1->velocity.x < p2->position.x + p2->dimensions.x)
-			{
-				p1->velocity.x = 0;
-				p1->position.x = p2->position.x + p2->dimensions.x;
-			}
-			else if (p1->position.x + p1->dimensions.x <= p2->position.x && p1->position.x + p1->dimensions.x + p1->velocity.x > p2->position.x)
+			if (p1->position.x + p1->dimensions.x <= p2->position.x && p1->position.x + p1->dimensions.x + (-p1->velocity.x) > p2->position.x)
 			{
 				p1->velocity.x = 0;
 				p1->position.x = p2->position.x - p1->dimensions.x;
 			}
+			else if (p1->position.x >= p2->position.x + p2->dimensions.x && p1->position.x + (-p1->velocity.x) < p2->position.x + p2->dimensions.x)
+			{
+				p1->velocity.x = 0;
+				p1->position.x = p2->position.x + p2->dimensions.x;
+			}
 		}
 	}
 }
+
+//Collision bugs
+//	1. if going too fast can clip to object behind closest object

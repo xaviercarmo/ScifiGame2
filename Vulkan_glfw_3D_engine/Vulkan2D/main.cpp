@@ -44,7 +44,7 @@ int main() {
 				
 				globals::gfx.setCameraPos(player1.position + cameraOffset);
 				if (globals::input.keys.f && !lastF) {
-					globals::polyhedrons.push_back(Cube(glm::vec3(1, 1, 1), glm::vec3(globals::gfx.getCameraPos().x, globals::gfx.getCameraPos().y, globals::gfx.getCameraPos().z), 100));
+					globals::polyhedrons.push_back(Cube(glm::vec3(1, 1, 1), glm::vec3(player1.position.x, player1.position.y, player1.position.z), 100));
 				}
 				lastF = globals::input.keys.f;
 

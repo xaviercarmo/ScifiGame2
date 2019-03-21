@@ -25,6 +25,7 @@ namespace globals
 		polyhedrons = std::vector<Polyhedron>
 		{
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), 100 },
+			//Cube{ glm::vec3(1, 1, 1), glm::vec3(1, 1, 0), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(1.6, 0, 0), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(3.2, 0, 0), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(4.8, 0, 0), 100 },

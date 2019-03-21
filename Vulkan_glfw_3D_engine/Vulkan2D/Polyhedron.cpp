@@ -61,9 +61,9 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 	//velocity.x *= 0.95;
 	//velocity.z *= 0.95;
 
-	//printf("vel x %f, vel z %f\n", velocity.x, velocity.z);
+	//printf("vel x %f, pos x %f, x+vel %f, objx %f\n", -velocity.x, position.x, position.x - velocity.x, globals::polyhedrons[1].position.x + globals::polyhedrons[1].dimensions.x);
 
-	force *= 0; //reset forces, anything that wants to continue to apply a force can do so at its own leisure lol
+	force *= 0;
 }
 
 void Polyhedron::applyContactFriction(float velocity, int direction, float& force)
