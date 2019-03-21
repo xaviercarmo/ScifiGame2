@@ -44,7 +44,6 @@ void Graphics::initVulkan() {
 	createTextureImage();
 	createTextureImageView();
 	createTextureSampler();
-	loadResources();
 	loadModels();
 	loadObjects();
 	createVertexBuffer();
@@ -984,11 +983,13 @@ void Graphics::copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width,
 	endSingleTimeCommands(commandBuffer);
 }
 
-void Graphics::loadModel(std::string path, glm::vec4 colour, float scale) {
+int Graphics::loadOBJFile(std::string path, glm::vec4 colour, float scale) {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 	std::string err;
+
+	int numberOfVertices = 0;
 
 	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path.c_str())) {
 		throw std::runtime_error(err);
@@ -1020,14 +1021,16 @@ void Graphics::loadModel(std::string path, glm::vec4 colour, float scale) {
 			vertex.color = colour;// {1.0f, 1.0f, 1.0f, 1};
 
 			//if (uniqueVertices.count(vertex) == 0) {
+
 			uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
 			vertices.push_back(vertex);
 			//}
 
 			indices.push_back(uniqueVertices[vertex]);
+			numberOfVertices++;
 		}
 	}
-	int y = 1;
+	return numberOfVertices;
 }
 
 void Graphics::createVertexBuffer() {
@@ -1697,27 +1700,20 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Graphics::debugCallback(VkDebugReportFlagsEXT fla
 	return VK_FALSE;
 }
 
-void Graphics::loadResources()
+void Graphics::loadModel(const char * path, glm::vec4 colour, float scale)
+{
+	int tempSize = loadOBJFile(path, colour, scale);
+	models.push_back(Model());
+	models[models.size() - 1].offset = sizeOfAllModels;
+	models[models.size() - 1].size = tempSize;
+	sizeOfAllModels += tempSize;
+}
+void Graphics::loadModels()
 {
 	loadModel("models/testUV.obj", glm::vec4(0.9, 0.1, 0.1, 1), 0.2);
 	loadModel("models/test3.obj", glm::vec4(0.2, 0.4, 0.9, 1), 1);
 	loadModel("models/xyzOrigin.obj", glm::vec4(0.1, 0.9, 0.1, 1), 1);
 	loadModel("models/small_sphere.obj", glm::vec4(0.7, 0.9, 0.1, 1), 1);
-}
-void Graphics::loadModels()
-{
-	models.push_back(Model());
-	models[models.size() - 1].offset = 0;
-	models[models.size() - 1].size = 36;
-	models.push_back(Model());
-	models[models.size() - 1].offset = 36;
-	models[models.size() - 1].size = 36;
-	models.push_back(Model());
-	models[models.size() - 1].offset = 72;
-	models[models.size() - 1].size = 684;
-	models.push_back(Model());
-	models[models.size() - 1].offset = 756;
-	models[models.size() - 1].size = 2280;
 }
 
 void Graphics::loadObjects() {

@@ -168,6 +168,8 @@ private:
 
 	const int MAX_OBJECTS = 500;
 
+	int sizeOfAllModels = 0;
+
 	const int WIDTH = 800;
 	const int HEIGHT = 600;
 	const int MAX_FRAMES_IN_FLIGHT = 2;
@@ -254,7 +256,7 @@ private:
 
 	bool framebufferResized = false;
 
-	void loadResources();
+	void loadModel(const char * path, glm::vec4 colour, float scale);
 
 	void loadModels();
 
@@ -343,7 +345,7 @@ private:
 
 	void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 
-	void loadModel(std::string path, glm::vec4 colour, float scale);
+	int loadOBJFile(std::string path, glm::vec4 colour, float scale);
 
 	void createVertexBuffer();
 
