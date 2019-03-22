@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Character.h"
 #include "Cube.h"
+#include "Platform.h"
 
 #include <windows.h>
 #include <chrono>

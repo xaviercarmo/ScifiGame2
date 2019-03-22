@@ -983,7 +983,7 @@ void Graphics::copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width,
 	endSingleTimeCommands(commandBuffer);
 }
 
-int Graphics::loadOBJFile(std::string path, glm::vec4 colour, float scale) {
+int Graphics::loadOBJFile(std::string path, glm::vec4 colour, glm::vec3 scale) {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
@@ -1002,9 +1002,9 @@ int Graphics::loadOBJFile(std::string path, glm::vec4 colour, float scale) {
 			Vertex vertex = {};
 
 			vertex.pos = {
-				attrib.vertices[3 * index.vertex_index + 0] * scale,
-				attrib.vertices[3 * index.vertex_index + 1] * scale,
-				attrib.vertices[3 * index.vertex_index + 2] * scale
+				attrib.vertices[3 * index.vertex_index + 0] * scale.x,
+				attrib.vertices[3 * index.vertex_index + 1] * scale.y,
+				attrib.vertices[3 * index.vertex_index + 2] * scale.z
 			};
 
 			vertex.normal = {
@@ -1402,7 +1402,7 @@ void Graphics::updateUniformBuffer(uint32_t currentImage) {
 	
 	ubo.proj = glm::perspective(glm::radians(FOV), swapChainExtent.width / (float)swapChainExtent.height, 0.001f, 1000.0f);
 	ubo.proj[1][1] *= -1;
-	ubo.cameraPos = glm::vec3(5,3,5);// cameraPosition;
+	ubo.cameraPos = glm::vec3(5,3,-5);// cameraPosition;
 	//static auto startTime = std::chrono::high_resolution_clock::now();
 
 	//auto currentTime = std::chrono::high_resolution_clock::now();
@@ -1700,7 +1700,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Graphics::debugCallback(VkDebugReportFlagsEXT fla
 	return VK_FALSE;
 }
 
-void Graphics::loadModel(const char * path, glm::vec4 colour, float scale)
+void Graphics::loadModel(const char * path, glm::vec4 colour, glm::vec3 scale)
 {
 	int tempSize = loadOBJFile(path, colour, scale);
 	models.push_back(Model());
@@ -1710,10 +1710,11 @@ void Graphics::loadModel(const char * path, glm::vec4 colour, float scale)
 }
 void Graphics::loadModels()
 {
-	loadModel("models/testUV.obj", glm::vec4(0.9, 0.1, 0.1, 1), 0.2);
-	loadModel("models/test3.obj", glm::vec4(0.2, 0.4, 0.9, 1), 1);
-	loadModel("models/xyzOrigin.obj", glm::vec4(0.1, 0.9, 0.1, 1), 1);
-	loadModel("models/small_sphere.obj", glm::vec4(0.7, 0.9, 0.1, 1), 1);
+	loadModel("models/testUV.obj", glm::vec4(0.9, 0.1, 0.1, 1), glm::vec3(0.2,0.2,0.2));
+	loadModel("models/test3.obj", glm::vec4(0.2, 0.4, 0.9, 1), glm::vec3(1));
+	loadModel("models/xyzOrigin.obj", glm::vec4(0.1, 0.9, 0.1, 1), glm::vec3(1));
+	loadModel("models/small_sphere.obj", glm::vec4(0.7, 0.9, 0.1, 1), glm::vec3(1));
+	loadModel("models/testUV.obj", glm::vec4(0.1, 0.7, 0.9, 1), glm::vec3(100, 1, 100));
 }
 
 void Graphics::loadObjects() {

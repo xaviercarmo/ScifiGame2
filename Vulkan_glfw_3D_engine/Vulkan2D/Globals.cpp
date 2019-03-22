@@ -1,6 +1,6 @@
 #include "Globals.h"
 #include "Cube.h"
-
+#include "platform.h"
 namespace globals
 {
 	Graphics gfx;
@@ -24,6 +24,7 @@ namespace globals
 
 		polyhedrons = std::vector<Polyhedron>
 		{
+			Platform{ glm::vec3(100, 1, 100), glm::vec3(-50, -5, -50), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(0, 0, 0), 100 },
 			//Cube{ glm::vec3(1, 1, 1), glm::vec3(1, 1, 0), 100 },
 			Cube{ glm::vec3(1, 1, 1), glm::vec3(1.6, 0, 0), 100 },

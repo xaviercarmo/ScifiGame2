@@ -256,7 +256,7 @@ private:
 
 	bool framebufferResized = false;
 
-	void loadModel(const char * path, glm::vec4 colour, float scale);
+	void loadModel(const char * path, glm::vec4 colour, glm::vec3 scale);
 
 	void loadModels();
 
@@ -345,7 +345,7 @@ private:
 
 	void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
 
-	int loadOBJFile(std::string path, glm::vec4 colour, float scale);
+	int loadOBJFile(std::string path, glm::vec4 colour, glm::vec3 scale);
 
 	void createVertexBuffer();
 

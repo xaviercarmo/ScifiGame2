@@ -135,6 +135,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Polyhedron.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="tiny_obj_loader.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Polyhedron.cpp" />
     <ClCompile Include="Globals.cpp" />
   </ItemGroup>
