@@ -1714,7 +1714,7 @@ void Graphics::loadModels()
 	loadModel("models/test3.obj", glm::vec4(0.2, 0.4, 0.9, 1), glm::vec3(1));
 	loadModel("models/xyzOrigin.obj", glm::vec4(0.1, 0.9, 0.1, 1), glm::vec3(1));
 	loadModel("models/small_sphere.obj", glm::vec4(0.7, 0.9, 0.1, 1), glm::vec3(1));
-	loadModel("models/testUV.obj", glm::vec4(0.1, 0.7, 0.9, 1), glm::vec3(100, 1, 100));
+	loadModel("models/testUV.obj", glm::vec4(0.2, 0.2, 0.2, 1), glm::vec3(100, 1, 100));
 }
 
 void Graphics::loadObjects() {
