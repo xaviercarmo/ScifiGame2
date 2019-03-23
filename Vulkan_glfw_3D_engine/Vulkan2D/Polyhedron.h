@@ -14,8 +14,8 @@ public:
 	glm::vec3 force{ 0, 0, 0 };
 	float mass;
 
-	float positiveStaticFrictionForce = 0.0;
-	float positiveKineticFrictionForce = 0.0;
+	float positiveStaticFrictionForce = 0.0f;
+	float positiveKineticFrictionForce = 0.0f;
 
 	glm::vec3 flippedDirections{ false, false, false };
 
@@ -26,10 +26,9 @@ public:
 	void applyPhysics();
 
 protected:
-	float kineticFrictionConstant;
-	float staticFrictionConstant;
+	float kineticFrictionConstant = 0.0f;;
+	float staticFrictionConstant = 0.0f;
 
-	//Object* vkObject;
 	int vkObjectIndex;
 
 	bool baseInContact();

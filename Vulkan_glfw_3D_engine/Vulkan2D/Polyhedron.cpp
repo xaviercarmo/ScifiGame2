@@ -4,7 +4,6 @@
 
 Polyhedron::Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, bool stationary) : dimensions(dimensions), position(position), mass(mass), stationary(stationary)
 {
-	//vkObject = NULL;
 	vkObjectIndex = -1;
 
 	setStaticFrictionConstant(0.8f);
@@ -60,8 +59,6 @@ void Polyhedron::applyPhysics() //possibly this kind of physics is better for ob
 
 	//velocity.x *= 0.95;
 	//velocity.z *= 0.95;
-
-	//printf("vel x %f, pos x %f, x+vel %f, objx %f\n", -velocity.x, position.x, position.x - velocity.x, globals::polyhedrons[1].position.x + globals::polyhedrons[1].dimensions.x);
 
 	force *= 0;
 }

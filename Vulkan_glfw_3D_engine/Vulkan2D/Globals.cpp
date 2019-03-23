@@ -6,8 +6,8 @@ namespace globals
 	Graphics gfx;
 	Input input;
 
-	const float dt = 1000.0f / 60.0f;
-	const float dtSeconds = dt / 1000.0f;
+	const float dt = 1000000.0f / 60.0f;
+	const float dtSeconds = 1.0f / 60.0f;
 
 	float gravityAccel = -0.98f;
 	std::vector<Polyhedron> polyhedrons;

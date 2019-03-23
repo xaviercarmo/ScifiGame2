@@ -6,6 +6,9 @@
 #include <windows.h>
 #include <chrono>
 
+//for testing
+#include <thread>
+
 using std::chrono::time_point_cast;
 using std::chrono::duration_cast;
 
@@ -14,27 +17,28 @@ const bool debug = false;
 int main() {
 	try {
 		typedef std::chrono::high_resolution_clock Time;
+		typedef std::chrono::seconds secs;
 		typedef std::chrono::milliseconds ms;
+		typedef std::chrono::microseconds us;
+		typedef std::chrono::nanoseconds ns;
 
 		globals::globalInit();
 
 		bool lastF;
 
-		//Character player1(glm::vec3(0.01f, 0.01f, 0.01f), glm::vec3(0.5, 2, 0.5), 60);
 		Character player1(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
 
-		double t = 0.0;
-		auto currentTime = time_point_cast<ms>(Time::now());
+		auto currentTime = time_point_cast<us>(Time::now());
 		double accumulator = 0.0;
-		
+
 		glm::vec3 cameraOffset{ 0, 2, 0 };
 
 		while (!globals::gfx.shouldClose) {
-			auto newTime = time_point_cast<ms>(Time::now());
-			auto frameTime = duration_cast<ms>(newTime - currentTime);
+			auto newTime = time_point_cast<us>(Time::now());
+			auto frameTime = duration_cast<us>(newTime - currentTime).count();
 			currentTime = newTime;
 
-			accumulator += frameTime.count();
+			accumulator += frameTime;
 
 			while (accumulator >= globals::dt) {
 				globals::gfx.setCameraAngle(globals::input.cameraAngle);
@@ -42,7 +46,7 @@ int main() {
 
 				player1.receiveInput();
 				player1.applyPhysics();
-				
+
 				globals::gfx.setCameraPos(player1.position + cameraOffset);
 				if (globals::input.keys.f && !lastF) {
 					globals::polyhedrons.push_back(Cube(glm::vec3(1, 1, 1), glm::vec3(player1.position.x, player1.position.y, player1.position.z), 100));
@@ -50,11 +54,12 @@ int main() {
 				lastF = globals::input.keys.f;
 
 				accumulator -= globals::dt;
-				t += globals::dt;
 			}
 
 			globals::gfx.run();
 		}
+
+
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << e.what() << std::endl;
