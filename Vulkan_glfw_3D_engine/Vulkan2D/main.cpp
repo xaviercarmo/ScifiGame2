@@ -44,8 +44,7 @@ int main() {
 				globals::gfx.setCameraAngle(globals::input.cameraAngle);
 				globals::input.run();
 
-				player1.receiveInput();
-				player1.applyPhysics();
+				player1.perLoop();
 
 				globals::gfx.setCameraPos(player1.position + cameraOffset);
 				if (globals::input.keys.f && !lastF) {

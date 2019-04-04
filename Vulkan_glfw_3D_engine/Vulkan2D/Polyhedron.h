@@ -23,8 +23,6 @@ public:
 
 	explicit Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, bool stationary);
 
-	void applyPhysics();
-
 protected:
 	float kineticFrictionConstant = 0.0f;;
 	float staticFrictionConstant = 0.0f;
@@ -32,9 +30,9 @@ protected:
 	int vkObjectIndex;
 
 	bool baseInContact();
-	
+
 	glm::ivec3 getVecDirections(glm::vec3 vec);
-	
+
 	void setStaticFrictionConstant(float newVal);
 	void setKineticFrictionConstant(float newVal);
 

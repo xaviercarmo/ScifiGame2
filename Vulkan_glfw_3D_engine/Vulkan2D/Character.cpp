@@ -7,32 +7,54 @@ Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Pol
 
 	setStaticFrictionConstant(0.9f);
 	setKineticFrictionConstant(0.8f);
-	moveForce = 60;
 }
 
 void Character::receiveInput()
 {
-	if (globals::input.keys.w && baseInContact())
+	bool baseTouching = baseInContact();
+
+	if (globals::input.keys.w)
 	{
-		force.z += moveForce;
+		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? diagMoveForce : moveForceGround; //if either (but not both or neither) a or d is pressed then scale down by 1/sqrt(2), same for x
+
+		//this bs needs to be changed in all 4 so that its limited better
+		if (!baseTouching)
+		{
+			moveForceVec.z *= 0.3f;
+		}
 	}
 
-	if (globals::input.keys.a && baseInContact())
+	if (globals::input.keys.a)
 	{
-		force.x += -moveForce;
+		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? -diagMoveForce :  -moveForceGround;
+
+		if (!baseTouching)
+		{
+			moveForceVec.x *= 0.3f;
+		}
 	}
 
-	if (globals::input.keys.s && baseInContact())
+	if (globals::input.keys.s)
 	{
-		force.z += -moveForce;
+		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? -diagMoveForce : -moveForceGround;
+
+		if (!baseTouching)
+		{
+			moveForceVec.z *= 0.3f;
+		}
 	}
 
-	if (globals::input.keys.d && baseInContact())
+	if (globals::input.keys.d)
 	{
-		force.x += moveForce;
+		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagMoveForce : moveForceGround;
+
+		if (!baseTouching)
+		{
+			moveForceVec.x *= 0.3f;
+		}
 	}
 
-	if (globals::input.keys.space && baseInContact())
+	if (globals::input.keys.space && baseTouching)
 	{
 		jump();
 	}
@@ -56,7 +78,115 @@ void Character::receiveInput()
 	}
 }
 
+void Character::perLoop()
+{
+	receiveInput();
+	applyPhysics();
+}
+
 void Character::jump()
 {
 	force.y += jumpForce;
+}
+
+void Character::applyPhysics()
+{
+	//if (surfaceChanged())
+	//setStaticFrictionConstant(newVal); //later, can evaluate the surface object is on and change friction constants so these setters actually do something (also don't need to evaluate them unless the terrain has changed, since we have one terrain ive ommitted them)
+
+	force.y += mass * globals::gravityAccel;
+
+	glm::ivec3 vecDirections = getVecDirections(velocity);
+	glm::ivec3 moveVecDirections = getVecDirections(moveVel);
+
+	bool baseTouching = baseInContact();
+
+	if (baseTouching)
+	{
+		applyContactFriction(velocity.x, vecDirections.x, force.x);
+		applyContactFriction(velocity.z, vecDirections.z, force.z);
+
+		applyContactFriction(moveVel.x, moveVecDirections.x, moveForceVec.x);
+		applyContactFriction(moveVel.z, moveVecDirections.z, moveForceVec.z);
+	}
+
+	velocity += (force / mass) * globals::dtSeconds; //adds the acceleration in increments because instantaneous acceleration is per second (and this "apply physics" method gets called "dtSeconds" times per second)
+	//^ this section adds forces from external effects (e.g. explosions, or being pushed)
+	moveVel += (moveForceVec / mass) * globals::dtSeconds;
+	//^ this is just the result of moving the player with wasd (which applies a force)
+	limitMoveVel();
+
+	glm::ivec3 newVecDirections = getVecDirections(velocity);
+	glm::ivec3 newMoveVecDirections = getVecDirections(moveVel);
+
+	if (baseTouching)
+	{
+		handleFrictionFlip(velocity.x, vecDirections.x, newVecDirections.x, force.x);
+		handleFrictionFlip(velocity.z, vecDirections.z, newVecDirections.z, force.z);
+
+		handleFrictionFlip(moveVel.x, moveVecDirections.x, newMoveVecDirections.x, moveForceVec.x);
+		handleFrictionFlip(moveVel.z, moveVecDirections.z, newMoveVecDirections.z, moveForceVec.z);
+	}
+
+	adjustPosition();
+
+	force *= 0;
+	moveForceVec *= 0;
+}
+
+void Character::limitMoveVel()
+{
+	//float speedToCompare = baseInContact() ? maxMoveSpeedGround : maxMoveSpeedAir;
+	float speedToCompare = maxMoveSpeedGround;
+
+	if (moveVel.x > speedToCompare)
+	{
+		moveVel.x = speedToCompare;
+	}
+	else if (moveVel.x < -speedToCompare)
+	{
+		moveVel.x = -speedToCompare;
+	}
+
+	if (moveVel.z > speedToCompare)
+	{
+		moveVel.z = speedToCompare;
+	}
+	else if (moveVel.z < -speedToCompare)
+	{
+		moveVel.z = -speedToCompare;
+	}
+}
+
+//could optimise this by changing collision so that it takes a reference to a vector which it sets, then use the output vector to set respective vectors
+void Character::adjustPosition()
+{
+	velocity += moveVel; //need vel to have moveVel for collision to work properly (needs to set both moveVel and vel to 0 in case of collision)
+
+	for (auto polyhedron : globals::polyhedrons)
+	{
+		collisionDetection::correctPolyhedrons(this, &polyhedron);
+	}
+
+	position += velocity * glm::vec3{ -1, 1, 1 };
+
+	//reset vel to keep vel and moveVel separate
+	if (velocity.x != 0)
+	{
+		velocity.x -= moveVel.x;
+	}
+	if (velocity.z != 0)
+	{
+		velocity.z -= moveVel.z;
+	}
+
+	setVkObjectPosition(position);
+}
+
+void Character::handleContactionFriction()
+{
+}
+
+void Character::handleContactFrictionFlips()
+{
 }
