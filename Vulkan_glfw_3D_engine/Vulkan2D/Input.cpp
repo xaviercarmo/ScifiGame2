@@ -259,23 +259,17 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 //Callback function for mouse click input
 void Input::mouse_button_callback(int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-		keys.mouseLeft = true;
-	}
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-		keys.mouseLeft = false;
-	}
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-		keys.mouseRight = true;
-	}
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
-		keys.mouseRight = false;
-	}
-	if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS) {
-		keys.mouseMiddle = true;
-	}
-	if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE) {
-		keys.mouseMiddle = false;
+	switch (button)
+	{
+		case GLFW_MOUSE_BUTTON_LEFT:
+			keys.mouseLeft = (action == GLFW_PRESS);
+			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			keys.mouseRight = (action == GLFW_PRESS);
+			break;
+		case GLFW_MOUSE_BUTTON_MIDDLE:
+			keys.mouseMiddle = (action == GLFW_PRESS);
+			break;
 	}
 }
 
