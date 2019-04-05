@@ -13,45 +13,32 @@ void Character::receiveInput()
 {
 	bool baseTouching = baseInContact();
 
+	float forceToAdd = baseTouching ? moveForceGround : moveForceAir;
+	float diagForceToAdd = baseTouching ? diagMoveForceGround : diagMoveForceAir;
+
 	if (globals::input.keys.w)
 	{
-		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? diagMoveForce : moveForceGround; //if either (but not both or neither) a or d is pressed then scale down by 1/sqrt(2), same for x
-
-		//this bs needs to be changed in all 4 so that its limited better
-		if (!baseTouching)
-		{
-			moveForceVec.z *= 0.3f;
-		}
+		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
 	}
 
 	if (globals::input.keys.a)
 	{
-		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? -diagMoveForce :  -moveForceGround;
-
-		if (!baseTouching)
-		{
-			moveForceVec.x *= 0.3f;
-		}
+		moveForceVec.x -= (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
 	}
 
 	if (globals::input.keys.s)
 	{
-		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? -diagMoveForce : -moveForceGround;
-
-		if (!baseTouching)
-		{
-			moveForceVec.z *= 0.3f;
-		}
+		moveForceVec.z -= (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
 	}
 
 	if (globals::input.keys.d)
 	{
-		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagMoveForce : moveForceGround;
+		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
+	}
 
-		if (!baseTouching)
-		{
-			moveForceVec.x *= 0.3f;
-		}
+	if (globals::input.keys.t)
+	{
+
 	}
 
 	if (globals::input.keys.space && baseTouching)
@@ -62,12 +49,14 @@ void Character::receiveInput()
 	if (globals::input.keys.leftShift)
 	{
 		force *= 0;
+		moveForceVec *= 0;
 		velocity *= 0;
+		moveVel *= 0;
 		position = glm::vec3{ 0.5, 2, 0.5 };
 		setVkObjectPosition(position);
 	}
 
-	if (globals::input.keys.alt)
+	if (globals::input.keys.leftAlt)
 	{
 		globals::gfx.setFreeLook(true);
 	}
@@ -136,7 +125,6 @@ void Character::applyPhysics()
 
 void Character::limitMoveVel()
 {
-	//float speedToCompare = baseInContact() ? maxMoveSpeedGround : maxMoveSpeedAir;
 	float speedToCompare = maxMoveSpeedGround;
 
 	if (moveVel.x > speedToCompare)
@@ -158,7 +146,7 @@ void Character::limitMoveVel()
 	}
 }
 
-//could optimise this by changing collision so that it takes a reference to a vector which it sets, then use the output vector to set respective vectors
+//could optimise this by changing collision so that it takes a reference to a vector which it sets, then use the output vector to set respective vectors (eliminates the need for the addition then the subtraction)
 void Character::adjustPosition()
 {
 	velocity += moveVel; //need vel to have moveVel for collision to work properly (needs to set both moveVel and vel to 0 in case of collision)
@@ -170,7 +158,7 @@ void Character::adjustPosition()
 
 	position += velocity * glm::vec3{ -1, 1, 1 };
 
-	//reset vel to keep vel and moveVel separate
+	//reset vel to keep vel and moveVel separate (but only if it didn't collide with something that set it to zero)
 	if (velocity.x != 0)
 	{
 		velocity.x -= moveVel.x;
@@ -181,12 +169,4 @@ void Character::adjustPosition()
 	}
 
 	setVkObjectPosition(position);
-}
-
-void Character::handleContactionFriction()
-{
-}
-
-void Character::handleContactFrictionFlips()
-{
 }

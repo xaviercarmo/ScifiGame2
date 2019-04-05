@@ -4,12 +4,61 @@
 #include <string>
 #include <glm\glm.hpp>
 
-struct keyValues { bool w = false; bool a = false; bool s = false; bool d = false; bool f = false; bool q = false; bool leftShift = false; bool rightShift = false; bool space = false; bool ctrl = false; bool tab = false; bool n1 = false; bool n2 = false; bool n3 = false; bool n4 = false; bool n5 = false; bool n6 = false; bool n7 = false; bool n8 = false; bool n9 = false; bool n0 = false;   bool mouseLeft = false; bool mouseRight = false; bool mouseMiddle = false; bool escape = false; bool alt = false; };
+struct KeyValues
+{
+	bool 
+		a = false,
+		b = false,
+		c = false,
+		d = false,
+		e = false,
+		f = false,
+		g = false,
+		h = false,
+		i = false,
+		j = false,
+		k = false,
+		l = false,
+		m = false,
+		n = false,
+		o = false,
+		p = false,
+		q = false,
+		r = false,
+		s = false,
+		t = false,
+		u = false,
+		v = false,
+		w = false,
+		x = false,
+		y = false,
+		z = false,
+		leftShift = false,
+		rightShift = false,
+		space = false,
+		leftCtrl = false,
+		tab = false,
+		n1 = false,
+		n2 = false,
+		n3 = false,
+		n4 = false,
+		n5 = false,
+		n6 = false,
+		n7 = false,
+		n8 = false,
+		n9 = false,
+		n0 = false,
+		mouseLeft = false,
+		mouseRight = false,
+		mouseMiddle = false,
+		escape = false,
+		leftAlt = false;
+};
 
 class Input {
 public:
 	std::string inputString = "";
-	keyValues keys;
+	KeyValues keys;
 	//int mouseScrollValue = 0;
 	bool stringInputEnabled = true;
 	bool EXIT = false;

@@ -14,8 +14,10 @@ using std::chrono::duration_cast;
 
 const bool debug = false;
 
-int main() {
-	try {
+int main()
+{
+	try
+	{
 		typedef std::chrono::high_resolution_clock Time;
 		typedef std::chrono::seconds secs;
 		typedef std::chrono::milliseconds ms;
@@ -40,14 +42,16 @@ int main() {
 
 			accumulator += frameTime;
 
-			while (accumulator >= globals::dt) {
+			while (accumulator >= globals::dt)
+			{
 				globals::gfx.setCameraAngle(globals::input.cameraAngle);
 				globals::input.run();
 
 				player1.perLoop();
 
 				globals::gfx.setCameraPos(player1.position + cameraOffset);
-				if (globals::input.keys.f && !lastF) {
+				if (globals::input.keys.f && !lastF)
+				{
 					globals::polyhedrons.push_back(Cube(glm::vec3(1, 1, 1), glm::vec3(player1.position.x, player1.position.y, player1.position.z), 100));
 				}
 				lastF = globals::input.keys.f;
@@ -60,11 +64,14 @@ int main() {
 
 
 	}
-	catch (const std::runtime_error& e) {
+	catch (const std::runtime_error& e)
+	{
 		std::cerr << e.what() << std::endl;
 		for (int i = 0; i < 100000000; i++) {}
 		return EXIT_FAILURE;
 	}
+
 	globals::gfx.cleanup();
+
 	return EXIT_SUCCESS;
 }
