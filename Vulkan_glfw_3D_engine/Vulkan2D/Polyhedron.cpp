@@ -10,6 +10,10 @@ Polyhedron::Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, boo
 	setKineticFrictionConstant(0.6f);
 }
 
+//void Polyhedron::perLoop()
+//{
+//}
+
 void Polyhedron::setStaticFrictionConstant(float newVal)
 {
 	staticFrictionConstant = newVal >= kineticFrictionConstant ? newVal : staticFrictionConstant; //should throw invalid arg exception probably

@@ -5,4 +5,6 @@ class Platform :
 {
 public:
 	explicit Platform(glm::vec3 dimensions, glm::vec3 position, float mass);
+
+	//void perLoop() override;
 };

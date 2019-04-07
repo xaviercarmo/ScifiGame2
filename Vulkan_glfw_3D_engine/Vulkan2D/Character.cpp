@@ -36,11 +36,6 @@ void Character::receiveInput()
 		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
 	}
 
-	if (globals::input.keys.t)
-	{
-
-	}
-
 	if (globals::input.keys.space && baseTouching)
 	{
 		jump();

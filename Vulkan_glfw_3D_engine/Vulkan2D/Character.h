@@ -10,15 +10,15 @@ public:
 	void jump();
 	void applyPhysics();
 	void receiveInput();
-	void perLoop();
+	void perLoop();// override;
 
 private:
 	int health = 100;
-	float maxMoveSpeedGround = 0.1;
+	float maxMoveSpeedGround = 0.1f;
 	float moveForceGround = 80;
 	float moveForceAir = 8;
-	float diagMoveForceGround = moveForceGround * 0.7;
-	float diagMoveForceAir = moveForceAir * 0.7;
+	float diagMoveForceGround = moveForceGround * 0.7f;
+	float diagMoveForceAir = moveForceAir * 0.7f;
 	float jumpForce = 900;
 
 	glm::vec3 moveVel{ 0, 0, 0 };

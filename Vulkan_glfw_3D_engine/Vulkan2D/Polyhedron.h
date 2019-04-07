@@ -23,6 +23,8 @@ public:
 
 	explicit Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, bool stationary);
 
+	//virtual void perLoop() = 0;
+
 protected:
 	float kineticFrictionConstant = 0.0f;;
 	float staticFrictionConstant = 0.0f;

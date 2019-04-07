@@ -19,10 +19,7 @@ int main()
 	try
 	{
 		typedef std::chrono::high_resolution_clock Time;
-		typedef std::chrono::seconds secs;
-		typedef std::chrono::milliseconds ms;
 		typedef std::chrono::microseconds us;
-		typedef std::chrono::nanoseconds ns;
 
 		globals::globalInit();
 
@@ -50,9 +47,10 @@ int main()
 				player1.perLoop();
 
 				globals::gfx.setCameraPos(player1.position + cameraOffset);
+
 				if (globals::input.keys.f && !lastF)
 				{
-					globals::polyhedrons.push_back(Cube(glm::vec3(1, 1, 1), glm::vec3(player1.position.x, player1.position.y, player1.position.z), 100));
+					globals::polyhedrons.push_back(Cube(1, glm::vec3(player1.position.x, player1.position.y, player1.position.z), 100));
 				}
 				lastF = globals::input.keys.f;
 
@@ -61,8 +59,6 @@ int main()
 
 			globals::gfx.run();
 		}
-
-
 	}
 	catch (const std::runtime_error& e)
 	{
