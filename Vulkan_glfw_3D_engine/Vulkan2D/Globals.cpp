@@ -35,7 +35,18 @@ namespace globals
 			Cube{ 1.0f, glm::vec3(9.60, 0, 0), 100 },
 			Cube{ 1.0f, glm::vec3(11.2, 0, 0), 100 },
 			Cube{ 1.0f, glm::vec3(12.8, 0, 0), 100 },
-			Cube{ 1.0f, glm::vec3(14.4, 0, 0), 100 }
+			Cube{ 1.0f, glm::vec3(14.4, 0, 0), 100 },
+			Platform{ glm::vec3(15.4, 0.2, 1), glm::vec3(0, -0.2, 0), 100 }
 		};
+		int k = 0;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				k++;
+				if (((float)k) / 2 == floor(((float)k) / 2)) {
+					polyhedrons.push_back(Platform{ glm::vec3(10, 1, 10), glm::vec3(-50 + i * 10, -4, -50 + j * 10), 100 });
+				}
+			}
+			k++;
+		}
 	}
 }
