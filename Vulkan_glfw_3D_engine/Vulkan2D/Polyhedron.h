@@ -23,6 +23,8 @@ public:
 
 	explicit Polyhedron(glm::vec3 dimensions, glm::vec3 position, float mass, bool stationary);
 
+	int testCounter = 0;
+
 	//virtual void perLoop() = 0;
 
 protected:
