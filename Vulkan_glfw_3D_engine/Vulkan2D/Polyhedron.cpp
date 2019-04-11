@@ -100,5 +100,5 @@ bool Polyhedron::baseInContact()
 
 void Polyhedron::setVkObjectPosition(glm::vec3 position)
 {
-	globals::gfx.getObjectAtIndex(vkObjectIndex)->transformData = glm::translate(glm::mat4(1.0f), glm::vec3{ position.x, position.y, position.z });
+	globals::gfx.moveObject(vkObjectIndex, position);
 }

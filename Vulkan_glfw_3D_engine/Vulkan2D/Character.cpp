@@ -3,7 +3,7 @@
 
 Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
-	vkObjectIndex = globals::gfx.addObject(position.x, position.y, position.z, 0);
+	vkObjectIndex = globals::gfx.addObject(position, glm::vec3(1,1,2), 0);
 
 	setStaticFrictionConstant(0.9f);
 	setKineticFrictionConstant(0.8f);

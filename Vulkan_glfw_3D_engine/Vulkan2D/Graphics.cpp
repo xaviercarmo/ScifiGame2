@@ -1718,7 +1718,7 @@ void Graphics::loadModels()
 }
 
 void Graphics::loadObjects() {
-	addObject(0, 0, 0, 3);
+	addObject(glm::vec3(0,0,0), glm::vec3(1,1,1), 3);
 }
 
 void Graphics::setUpCamera() {
@@ -1758,14 +1758,32 @@ GLFWwindow* Graphics::getWindowPointer() {
 	return window;
 }
 
-int Graphics::addObject(float x, float y, float z, int modelIndex) {
+int Graphics::addObject(glm::vec3 position, glm::vec3 scale, int modelIndex) {
 	if (objects.size() >= MAX_OBJECTS) { return NULL; }
 
 	objects.push_back(Object());
+	objects[objects.size() - 1].position = position;
+	objects[objects.size() - 1].scale = scale;
 	objects[objects.size() - 1].model = &models[modelIndex];
-	objects[objects.size() - 1].transformData = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z));
+	recalculateObjectMatrix(objects.size() - 1);
 
 	return objects.size() - 1;
+}
+
+void Graphics::moveObject(int objectIndex, glm::vec3 position) {
+	objects[objectIndex].position = position;
+	recalculateObjectMatrix(objectIndex);
+}
+
+void Graphics::scaleObject(int objectIndex, glm::vec3 scale) {
+	objects[objectIndex].scale = scale;
+	recalculateObjectMatrix(objectIndex);
+}
+
+void Graphics::recalculateObjectMatrix(int objectIndex)
+{
+	objects[objects.size() - 1].transformData = glm::translate(glm::mat4(1.0f), objects[objectIndex].position);
+	objects[objects.size() - 1].transformData = glm::scale(objects[objects.size() - 1].transformData, objects[objectIndex].scale);
 }
 
 //Object* Graphics::addObject(float x, float y, float z, int modelIndex) {

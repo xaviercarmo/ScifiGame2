@@ -31,6 +31,8 @@ struct Model {
 struct Object {
 	Model *model;
 	glm::mat4 transformData;
+	glm::vec3 scale;
+	glm::vec3 position;
 };
 
 struct UniformBufferObject {
@@ -150,7 +152,13 @@ public:
 
 	GLFWwindow* getWindowPointer();
 
-	int addObject(float x, float y, float z, int modelIndex);
+	int addObject(glm::vec3 position, glm::vec3 scale, int modelIndex);
+
+	void moveObject(int objectIndex, glm::vec3 position);
+
+	void scaleObject(int objectIndex, glm::vec3 scale);
+
+	void recalculateObjectMatrix(int objectIndex);
 
 	//Object* addObject(float x, float y, float z, int modelIndex);
 
@@ -287,7 +295,7 @@ private:
 
 	void initVulkan();
 
-	void mainLoop();
+	//void mainLoop();
 
 	void cleanupSwapChain();
 
