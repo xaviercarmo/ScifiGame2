@@ -89,7 +89,10 @@ bool Polyhedron::baseInContact()
 {
 	for (auto polyhedron : globals::polyhedrons)
 	{
-		if (position.y == polyhedron.position.y + polyhedron.dimensions.y && collisionDetection::detectRectangleCollision(position.x, position.z, dimensions.x, dimensions.z, polyhedron.position.x, polyhedron.position.z, polyhedron.dimensions.x, polyhedron.dimensions.z))
+		collisionDetection::Rectangle playerBase = collisionDetection::Rectangle{ position.x, position.z, dimensions.x, dimensions.z, velocity.x, 0, velocity.y, 0};
+		collisionDetection::Rectangle polyhedronTop = collisionDetection::Rectangle{ polyhedron.position.x, polyhedron.position.z, polyhedron.dimensions.x, polyhedron.dimensions.z, polyhedron.velocity.x, 0, polyhedron.velocity.z, 0 };
+		
+		if (position.y == polyhedron.position.y + polyhedron.dimensions.y && collisionDetection::detectRectangleCollision(playerBase, polyhedronTop))
 		{
 			return true;
 		}

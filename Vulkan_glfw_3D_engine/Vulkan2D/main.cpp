@@ -25,7 +25,7 @@ int main()
 
 		bool lastF;
 
-		Character player1(glm::vec3(1, 1, 1) * 0.4f, glm::vec3(0, 4, 0), 60);
+		Character player1(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
 
 		auto currentTime = time_point_cast<us>(Time::now());
 		double accumulator = 0.0;
