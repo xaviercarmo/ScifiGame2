@@ -56,8 +56,13 @@ int main()
 				globals::gfx.setCameraAngle(globals::input.cameraAngle);
 				globals::input.run();
 
-				player1->perLoop();
-				player2->perLoop();
+				//player1->perLoop();
+				//player2->perLoop();
+
+				for (auto polyhedron : globals::polyhedrons)
+				{
+					polyhedron->perLoop();
+				}
 
 				globals::gfx.setCameraPos(player1->position + cameraOffset);
 

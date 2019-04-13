@@ -6,6 +6,6 @@ class Cube :
 public:
 	explicit Cube(float size, glm::vec3 position, float mass, bool stationary = true);
 
-	void perLoop(); // override;
+	void perLoop() override;
 };
 

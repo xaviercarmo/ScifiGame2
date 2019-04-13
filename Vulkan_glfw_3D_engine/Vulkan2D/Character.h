@@ -19,7 +19,7 @@ public:
 	void jump();
 	void applyPhysics();
 	void receiveInput();
-	void perLoop();// override;
+	void perLoop() override;
 
 	ControlScheme controlScheme{ &globals::input.keys.w, &globals::input.keys.s, &globals::input.keys.a, &globals::input.keys.d, &globals::input.keys.space };
 

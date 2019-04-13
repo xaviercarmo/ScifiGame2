@@ -25,7 +25,7 @@ public:
 
 	int testCounter = 0;
 
-	//virtual void perLoop() = 0;
+	virtual void perLoop() = 0;
 
 	std::string name = "player";
 

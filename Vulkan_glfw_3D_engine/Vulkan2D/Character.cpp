@@ -151,7 +151,7 @@ void Character::adjustPosition()
 {
 	velocity += moveVel; //need vel to have moveVel for collision to work properly (needs to set both moveVel and vel to 0 in case of collision)
 
-	for (auto& polyhedron : globals::polyhedrons)
+	for (auto polyhedron : globals::polyhedrons)
 	{
 		collisionDetection::correctPolyhedrons(*this, *polyhedron);
 	}

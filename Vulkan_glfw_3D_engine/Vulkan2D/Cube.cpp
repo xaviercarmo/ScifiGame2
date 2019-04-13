@@ -6,6 +6,6 @@ Cube::Cube(float size, glm::vec3 position, float mass, bool stationary) : Polyhe
 	vkObjectIndex = globals::gfx.addObject(position, glm::vec3(1,1,1), 1);
 }
 
-//void Cube::perLoop()
-//{
-//}
+void Cube::perLoop()
+{
+}

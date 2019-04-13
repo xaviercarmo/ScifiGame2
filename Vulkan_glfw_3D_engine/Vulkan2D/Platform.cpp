@@ -6,6 +6,6 @@ Platform::Platform(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyh
 	vkObjectIndex = globals::gfx.addObject(position, dimensions, 4);
 }
 
-//void Platform::perLoop()
-//{
-//}
+void Platform::perLoop()
+{
+}
