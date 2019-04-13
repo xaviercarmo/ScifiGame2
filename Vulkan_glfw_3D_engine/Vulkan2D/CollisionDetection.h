@@ -17,5 +17,5 @@ namespace collisionDetection
 	};
 
 	bool detectRectangleCollision(Rectangle& r1, Rectangle& r2);
-	void correctPolyhedrons(Polyhedron* p1, Polyhedron* p2);
+	void correctPolyhedrons(Polyhedron& p1, Polyhedron& p2);
 }

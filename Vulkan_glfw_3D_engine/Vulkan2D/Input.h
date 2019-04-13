@@ -6,7 +6,7 @@
 
 struct KeyValues
 {
-	bool 
+	bool
 		a = false,
 		b = false,
 		c = false,
@@ -33,11 +33,7 @@ struct KeyValues
 		x = false,
 		y = false,
 		z = false,
-		leftShift = false,
-		rightShift = false,
-		space = false,
-		leftCtrl = false,
-		tab = false,
+
 		n1 = false,
 		n2 = false,
 		n3 = false,
@@ -48,11 +44,23 @@ struct KeyValues
 		n8 = false,
 		n9 = false,
 		n0 = false,
+
+		leftShift = false,
+		rightShift = false,
+		space = false,
+		leftCtrl = false,
+		tab = false,
+		leftAlt = false,
+		escape = false,
+
 		mouseLeft = false,
 		mouseRight = false,
 		mouseMiddle = false,
-		escape = false,
-		leftAlt = false;
+
+		leftArrow = false,
+		rightArrow = false,
+		upArrow = false,
+		downArrow = false;
 };
 
 class Input {

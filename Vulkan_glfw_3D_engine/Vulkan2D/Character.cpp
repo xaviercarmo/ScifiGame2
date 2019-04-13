@@ -3,7 +3,7 @@
 
 Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
-	vkObjectIndex = globals::gfx.addObject(position, /*glm::vec3(1,1,1)*/dimensions * 5.0f, 0);
+	vkObjectIndex = globals::gfx.addObject(position, dimensions * 5.0f, 0);
 
 	setStaticFrictionConstant(0.9f);
 	setKineticFrictionConstant(0.8f);
@@ -16,27 +16,32 @@ void Character::receiveInput()
 	float forceToAdd = baseTouching ? moveForceGround : moveForceAir;
 	float diagForceToAdd = baseTouching ? diagMoveForceGround : diagMoveForceAir;
 
-	if (globals::input.keys.w)
+	//if (globals::input.keys.w)
+	if (*controlScheme.forward)
 	{
 		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
 	}
 
-	if (globals::input.keys.a)
+	//if (globals::input.keys.a)
+	if (*controlScheme.left)
 	{
 		moveForceVec.x -= (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
 	}
 
-	if (globals::input.keys.s)
+	//if (globals::input.keys.s)
+	if (*controlScheme.backward)
 	{
 		moveForceVec.z -= (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
 	}
 
-	if (globals::input.keys.d)
+	//if (globals::input.keys.d)
+	if (*controlScheme.right)
 	{
 		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
 	}
 
-	if (globals::input.keys.space && baseTouching)
+	//if (globals::input.keys.space && baseTouching)
+	if (*controlScheme.jump && baseTouching)
 	{
 		jump();
 	}
@@ -146,9 +151,9 @@ void Character::adjustPosition()
 {
 	velocity += moveVel; //need vel to have moveVel for collision to work properly (needs to set both moveVel and vel to 0 in case of collision)
 
-	for (auto polyhedron : globals::polyhedrons)
+	for (auto& polyhedron : globals::polyhedrons)
 	{
-		collisionDetection::correctPolyhedrons(this, &polyhedron);
+		collisionDetection::correctPolyhedrons(*this, *polyhedron);
 	}
 
 	position += velocity * glm::vec3{ -1, 1, 1 };

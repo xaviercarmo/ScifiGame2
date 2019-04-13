@@ -1,6 +1,15 @@
 #pragma once
 #include "Globals.h"
 
+struct ControlScheme
+{
+	bool* forward;
+	bool* backward;
+	bool* left;
+	bool* right;
+	bool* jump;
+};
+
 class Character :
 	public Polyhedron
 {
@@ -11,6 +20,8 @@ public:
 	void applyPhysics();
 	void receiveInput();
 	void perLoop();// override;
+
+	ControlScheme controlScheme{ &globals::input.keys.w, &globals::input.keys.s, &globals::input.keys.a, &globals::input.keys.d, &globals::input.keys.space };
 
 private:
 	int health = 100;

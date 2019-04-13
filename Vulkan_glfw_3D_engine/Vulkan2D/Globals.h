@@ -3,6 +3,8 @@
 
 namespace globals
 {
+	using std::shared_ptr;
+
 	extern Graphics gfx;
 	extern Input input;
 
@@ -11,7 +13,7 @@ namespace globals
 
 	extern float gravityAccel;
 
-	extern std::vector<Polyhedron> polyhedrons;
+	extern std::vector<shared_ptr<Polyhedron>> polyhedrons;
 
 	void globalInit();
 }

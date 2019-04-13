@@ -177,6 +177,18 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 		case GLFW_KEY_TAB:
 			keys.tab = action & (GLFW_PRESS | GLFW_REPEAT);
 			break;
+		case GLFW_KEY_LEFT:
+			keys.leftArrow = action & (GLFW_PRESS | GLFW_REPEAT);
+			break;
+		case GLFW_KEY_RIGHT:
+			keys.rightArrow = action & (GLFW_PRESS | GLFW_REPEAT);
+			break;
+		case GLFW_KEY_UP:
+			keys.upArrow = action & (GLFW_PRESS | GLFW_REPEAT);
+			break;
+		case GLFW_KEY_DOWN:
+			keys.downArrow = action & (GLFW_PRESS | GLFW_REPEAT);
+			break;
 		case GLFW_KEY_A:
 			keys.a = action & (GLFW_PRESS | GLFW_REPEAT);
 			break;

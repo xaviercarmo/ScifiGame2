@@ -16,6 +16,8 @@ const bool debug = false;
 
 int main()
 {
+	using std::make_shared;
+
 	try
 	{
 		typedef std::chrono::high_resolution_clock Time;
@@ -25,7 +27,17 @@ int main()
 
 		bool lastF;
 
-		Character player1(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
+		auto player1 = make_shared<Character>(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
+		player1->name = "player1";
+		globals::polyhedrons.push_back(player1);
+		
+		auto player2 = make_shared<Character>(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0/*-0.25*/, 4, 0), 60);
+		player2->name = "player2";
+		player2->controlScheme.forward = &globals::input.keys.upArrow;
+		player2->controlScheme.backward = &globals::input.keys.downArrow;
+		player2->controlScheme.left = &globals::input.keys.leftArrow;
+		player2->controlScheme.right = &globals::input.keys.rightArrow;
+		globals::polyhedrons.push_back(player2);
 
 		auto currentTime = time_point_cast<us>(Time::now());
 		double accumulator = 0.0;
@@ -44,13 +56,14 @@ int main()
 				globals::gfx.setCameraAngle(globals::input.cameraAngle);
 				globals::input.run();
 
-				player1.perLoop();
+				player1->perLoop();
+				player2->perLoop();
 
-				globals::gfx.setCameraPos(player1.position + cameraOffset);
+				globals::gfx.setCameraPos(player1->position + cameraOffset);
 
 				if (globals::input.keys.f && !lastF)
 				{
-					globals::polyhedrons.push_back(Cube(1, glm::vec3(player1.position.x, player1.position.y, player1.position.z), 100));
+					globals::polyhedrons.push_back(make_shared<Cube>(1, glm::vec3(player1->position.x, player1->position.y, player1->position.z), 100));
 				}
 				lastF = globals::input.keys.f;
 

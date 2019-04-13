@@ -27,6 +27,8 @@ public:
 
 	//virtual void perLoop() = 0;
 
+	std::string name = "player";
+
 protected:
 	float kineticFrictionConstant = 0.0f;;
 	float staticFrictionConstant = 0.0f;
