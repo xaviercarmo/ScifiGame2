@@ -31,7 +31,7 @@ int main()
 		player1->name = "player1";
 		globals::polyhedrons.push_back(player1);
 		
-		auto player2 = make_shared<Character>(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0/*-0.25*/, 4, 0), 60);
+		auto player2 = make_shared<Character>(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
 		player2->name = "player2";
 		player2->controlScheme.forward = &globals::input.keys.upArrow;
 		player2->controlScheme.backward = &globals::input.keys.downArrow;
