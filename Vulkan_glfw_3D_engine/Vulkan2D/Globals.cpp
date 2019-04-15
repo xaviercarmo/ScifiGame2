@@ -28,6 +28,7 @@ namespace globals
 		polyhedrons = std::vector<shared_ptr<Polyhedron>>
 		{
 			make_shared<Platform>(glm::vec3(100, 1, 100), glm::vec3(-50, -5, -50), 100),
+
 			make_shared<Cube>(1.0f, glm::vec3(0.00, 0, 0), 100),
 			make_shared<Cube>(1.0f, glm::vec3(1.60, 0, 0), 100),
 			make_shared<Cube>(1.0f, glm::vec3(3.20, 0, 0), 100),
@@ -38,6 +39,12 @@ namespace globals
 			make_shared<Cube>(1.0f, glm::vec3(11.2, 0, 0), 100),
 			make_shared<Cube>(1.0f, glm::vec3(12.8, 0, 0), 100),
 			make_shared<Cube>(1.0f, glm::vec3(14.4, 0, 0), 100),
+
+			make_shared<Cube>(0.2f, glm::vec3(-5.5, 0, 4), 60, false),
+			make_shared<Cube>(0.2f, glm::vec3(-4.5, 0, 4), 60, false),
+			make_shared<Cube>(0.2f, glm::vec3(-5, 0, 4.5), 60, false),
+			make_shared<Cube>(0.2f, glm::vec3(-5, 0, 3.5), 60, false),
+
 			make_shared<Platform>(glm::vec3(15.4, 0.2, 1), glm::vec3(0, -0.2, 0), 100)
 		};
 

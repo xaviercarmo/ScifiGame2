@@ -37,6 +37,7 @@ int main()
 		player2->controlScheme.backward = &globals::input.keys.downArrow;
 		player2->controlScheme.left = &globals::input.keys.leftArrow;
 		player2->controlScheme.right = &globals::input.keys.rightArrow;
+		player2->controlScheme.jump = &globals::input.keys.rightShift;
 		globals::polyhedrons.push_back(player2);
 
 		auto currentTime = time_point_cast<us>(Time::now());
@@ -55,9 +56,6 @@ int main()
 			{
 				globals::gfx.setCameraAngle(globals::input.cameraAngle);
 				globals::input.run();
-
-				//player1->perLoop();
-				//player2->perLoop();
 
 				for (auto polyhedron : globals::polyhedrons)
 				{

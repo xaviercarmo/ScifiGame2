@@ -59,7 +59,6 @@ void Graphics::initVulkan() {
 
 void Graphics::run() {
 	if (!glfwWindowShouldClose(window)) {
-		glfwPollEvents();
 		drawFrame();
 	}
 	else {
