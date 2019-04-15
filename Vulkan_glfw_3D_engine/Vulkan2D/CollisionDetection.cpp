@@ -78,3 +78,4 @@ namespace collisionDetection {
 
 //Collision bugs
 //	1. if going too fast can clip to object behind closest object
+//  2. gravity can cause clipping through object (think that's why)

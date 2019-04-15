@@ -16,34 +16,36 @@ void Character::receiveInput()
 	float forceToAdd = baseTouching ? moveForceGround : moveForceAir;
 	float diagForceToAdd = baseTouching ? diagMoveForceGround : diagMoveForceAir;
 
-	//if (globals::input.keys.w)
 	if (*controlScheme.forward)
 	{
 		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
 	}
 
-	//if (globals::input.keys.a)
 	if (*controlScheme.left)
 	{
 		moveForceVec.x -= (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
 	}
 
-	//if (globals::input.keys.s)
 	if (*controlScheme.backward)
 	{
 		moveForceVec.z -= (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
 	}
 
-	//if (globals::input.keys.d)
 	if (*controlScheme.right)
 	{
 		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
 	}
 
-	//if (globals::input.keys.space && baseTouching)
-	if (*controlScheme.jump && baseTouching)
+	if (*controlScheme.jump)
 	{
-		jump();
+		if (baseTouching)
+		{
+			jump();
+		}
+		else
+		{
+			slam();
+		}
 	}
 
 	if (globals::input.keys.leftShift)
@@ -76,6 +78,11 @@ void Character::perLoop()
 void Character::jump()
 {
 	force.y += jumpForce;
+}
+
+void Character::slam()
+{
+	//force.y -= jumpForce; //doesn't work properly yet
 }
 
 void Character::applyPhysics()

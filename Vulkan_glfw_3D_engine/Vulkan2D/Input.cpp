@@ -18,13 +18,13 @@ void Input::run() {
 	if (inFocus) {
 
 		glfwSetCursorPos(windowPointer, windowWidth / 2, windowHeight / 2);
-		cameraAngle.x += 0.003 * float(windowWidth / 2 - xpos);
-		cameraAngle.y += 0.003 * float(windowHeight / 2 - ypos);
-		if (cameraAngle.y < -3.14 / 2) {
-			cameraAngle.y = -3.14 / 2;
+		cameraAngle.x += 0.003f * float(windowWidth / 2 - xpos);
+		cameraAngle.y += 0.003f * float(windowHeight / 2 - ypos);
+		if (cameraAngle.y < -3.14f / 2.0f) {
+			cameraAngle.y = -3.14f / 2.0f;
 		}
-		if (cameraAngle.y > 3.14 / 2) {
-			cameraAngle.y = 3.14 / 2;
+		if (cameraAngle.y > 3.14f / 2.0f) {
+			cameraAngle.y = 3.14f / 2.0f;
 		}
 		glfwSetInputMode(windowPointer, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 	}
@@ -269,6 +269,7 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 			break;
 	}
 }
+
 //Callback function for mouse click input
 void Input::mouse_button_callback(int button, int action, int mods)
 {

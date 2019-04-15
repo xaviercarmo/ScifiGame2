@@ -16,8 +16,6 @@ class Character :
 public:
 	explicit Character(glm::vec3 dimensions, glm::vec3 position, float mass);
 
-	void jump();
-	void applyPhysics();
 	void receiveInput();
 	void perLoop() override;
 
@@ -35,6 +33,9 @@ private:
 	glm::vec3 moveVel{ 0, 0, 0 };
 	glm::vec3 moveForceVec{ 0, 0, 0 };
 
+	void jump();
+	void slam();
+	void applyPhysics();
 	void limitMoveVel();
 	void adjustPosition();
 };
