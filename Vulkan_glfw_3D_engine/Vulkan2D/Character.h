@@ -3,11 +3,11 @@
 
 struct ControlScheme
 {
-	bool* forward;
-	bool* backward;
-	bool* left;
-	bool* right;
-	bool* jump;
+	int* forward;
+	int* backward;
+	int* left;
+	int* right;
+	int* jump;
 };
 
 class Character :
@@ -19,7 +19,7 @@ public:
 	void receiveInput();
 	void perLoop() override;
 
-	ControlScheme controlScheme{ &globals::input.keys.w, &globals::input.keys.s, &globals::input.keys.a, &globals::input.keys.d, &globals::input.keys.space };
+	ControlScheme controlScheme{ &globals::input.keys.keyCounts["w"], &globals::input.keys.keyCounts["s"], &globals::input.keys.keyCounts["a"], &globals::input.keys.keyCounts["d"], &globals::input.keys.keyCounts["space"] };
 
 private:
 	int health = 100;
@@ -29,6 +29,9 @@ private:
 	float diagMoveForceGround = moveForceGround * 0.7f;
 	float diagMoveForceAir = moveForceAir * 0.7f;
 	float jumpForce = 900;
+
+	bool spacePressed = false;
+	bool canSlam = false;
 
 	glm::vec3 moveVel{ 0, 0, 0 };
 	glm::vec3 moveForceVec{ 0, 0, 0 };

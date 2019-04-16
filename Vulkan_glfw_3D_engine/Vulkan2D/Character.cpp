@@ -1,6 +1,8 @@
 #include "Character.h"
 #include "CollisionDetection.h"
 
+using globals::input;
+
 Character::Character(glm::vec3 dimensions, glm::vec3 position, float mass) : Polyhedron(dimensions, position, mass, false)
 {
 	vkObjectIndex = globals::gfx.addObject(position, dimensions * 5.0f, 0);
@@ -18,37 +20,46 @@ void Character::receiveInput()
 
 	if (*controlScheme.forward)
 	{
-		moveForceVec.z += (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
+		moveForceVec.z += (!!*controlScheme.left != !!*controlScheme.right) ? diagForceToAdd : forceToAdd;
 	}
 
 	if (*controlScheme.left)
 	{
-		moveForceVec.x -= (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
+		moveForceVec.x -= (!!*controlScheme.forward != !!*controlScheme.backward) ? diagForceToAdd : forceToAdd;
 	}
 
 	if (*controlScheme.backward)
 	{
-		moveForceVec.z -= (globals::input.keys.a != globals::input.keys.d) ? diagForceToAdd : forceToAdd;
+		moveForceVec.z -= (!!*controlScheme.left != !!*controlScheme.right) ? diagForceToAdd : forceToAdd;
 	}
 
 	if (*controlScheme.right)
 	{
-		moveForceVec.x += (globals::input.keys.w != globals::input.keys.s) ? diagForceToAdd : forceToAdd;
+		moveForceVec.x += (!!*controlScheme.forward != !!*controlScheme.backward) ? diagForceToAdd : forceToAdd;
 	}
 
-	if (*controlScheme.jump)
+	if (baseTouching)
+	{
+		canSlam = false;
+	}
+
+	if (*controlScheme.jump == 1)
 	{
 		if (baseTouching)
 		{
 			jump();
+
+			canSlam = true;
 		}
-		else
+		else if (canSlam)
 		{
 			slam();
+
+			canSlam = false;
 		}
 	}
 
-	if (globals::input.keys.leftShift)
+	if (globals::input.keys.keyCounts["leftShift"])
 	{
 		force *= 0;
 		moveForceVec *= 0;
@@ -58,7 +69,7 @@ void Character::receiveInput()
 		setVkObjectPosition(position);
 	}
 
-	if (globals::input.keys.leftAlt)
+	if (globals::input.keys.keyCounts["leftAlt"])
 	{
 		globals::gfx.setFreeLook(true);
 	}
@@ -82,7 +93,15 @@ void Character::jump()
 
 void Character::slam()
 {
-	//force.y -= jumpForce; //doesn't work properly yet
+	force.y -= jumpForce * 3;
+	force.x = 0;
+	force.z = 0;
+
+	velocity.x = 0;
+	velocity.z = 0;
+
+	moveForceVec *= 0;
+	moveVel *= 0;
 }
 
 void Character::applyPhysics()

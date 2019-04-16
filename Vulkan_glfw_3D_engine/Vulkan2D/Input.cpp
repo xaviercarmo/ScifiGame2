@@ -16,7 +16,6 @@ void Input::run() {
 	glfwPollEvents();
 	glfwGetCursorPos(windowPointer, &xpos, &ypos);
 	if (inFocus) {
-
 		glfwSetCursorPos(windowPointer, windowWidth / 2, windowHeight / 2);
 		cameraAngle.x += 0.003f * float(windowWidth / 2 - xpos);
 		cameraAngle.y += 0.003f * float(windowHeight / 2 - ypos);
@@ -27,6 +26,8 @@ void Input::run() {
 			cameraAngle.y = 3.14f / 2.0f;
 		}
 		glfwSetInputMode(windowPointer, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+		keys.updateCounts();
 	}
 	else {
 		glfwSetInputMode(windowPointer, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -90,7 +91,7 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 				key == GLFW_KEY_0 ||
 				key == GLFW_KEY_MINUS
 				) {
-				if (keys.leftShift || keys.rightShift) {
+				if (keys.keyCounts["leftShift"] || keys.keyCounts["rightShift"]) {
 					if (key == GLFW_KEY_MINUS) {
 						inputString += "_";
 					}
@@ -117,7 +118,7 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 			}
 			if (key == GLFW_KEY_BACKSPACE && inputString.size() > 0) {
 				inputString.resize(inputString.size() - 1);
-				if (keys.leftCtrl) {
+				if (keys.keyCounts["leftCtrl"]) {
 					inputString = "";
 				}
 			}
@@ -126,147 +127,147 @@ void Input::key_callback(int key, int scancode, int action, int mods)
 
 	switch (key)
 	{
-		case GLFW_KEY_1:
-			keys.n1 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_2:
-			keys.n2 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_3:
-			keys.n3 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_4:
-			keys.n4 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_5:
-			keys.n5 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_6:
-			keys.n6 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_7:
-			keys.n7 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_8:
-			keys.n8 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_9:
-			keys.n9 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_0:
-			keys.n0 = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_LEFT_ALT:
-			keys.leftAlt = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_ESCAPE:
-			keys.escape = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_SPACE:
-			keys.space = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_LEFT_SHIFT:
-			keys.leftShift = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_RIGHT_SHIFT:
-			keys.rightShift = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_LEFT_CONTROL:
-			keys.leftCtrl = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_TAB:
-			keys.tab = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_LEFT:
-			keys.leftArrow = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_RIGHT:
-			keys.rightArrow = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_UP:
-			keys.upArrow = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_DOWN:
-			keys.downArrow = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_A:
-			keys.a = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_B:
-			keys.b = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_C:
-			keys.c = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_D:
-			keys.d = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_E:
-			keys.e = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_F:
-			keys.f = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_G:
-			keys.g = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_H:
-			keys.h = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_I:
-			keys.i = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_J:
-			keys.j = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_K:
-			keys.k = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_L:
-			keys.l = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_M:
-			keys.m = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_N:
-			keys.n = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_O:
-			keys.o = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_P:
-			keys.p = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_Q:
-			keys.q = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_R:
-			keys.r = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_S:
-			keys.s = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_T:
-			keys.t = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_U:
-			keys.u = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_V:
-			keys.v = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_W:
-			keys.w = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_X:
-			keys.x = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_Y:
-			keys.y = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_KEY_Z:
-			keys.z = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
+	case GLFW_KEY_1:
+		keys.performAction(keys.keyCounts["n1"], action);
+		break;
+	case GLFW_KEY_2:
+		keys.performAction(keys.keyCounts["n2"], action);
+		break;
+	case GLFW_KEY_3:
+		keys.performAction(keys.keyCounts["n3"], action);
+		break;
+	case GLFW_KEY_4:
+		keys.performAction(keys.keyCounts["n4"], action);
+		break;
+	case GLFW_KEY_5:
+		keys.performAction(keys.keyCounts["n5"], action);
+		break;
+	case GLFW_KEY_6:
+		keys.performAction(keys.keyCounts["n6"], action);
+		break;
+	case GLFW_KEY_7:
+		keys.performAction(keys.keyCounts["n7"], action);
+		break;
+	case GLFW_KEY_8:
+		keys.performAction(keys.keyCounts["n8"], action);
+		break;
+	case GLFW_KEY_9:
+		keys.performAction(keys.keyCounts["n9"], action);
+		break;
+	case GLFW_KEY_0:
+		keys.performAction(keys.keyCounts["n0"], action);
+		break;
+	case GLFW_KEY_LEFT_ALT:
+		keys.performAction(keys.keyCounts["leftAlt"], action);
+		break;
+	case GLFW_KEY_ESCAPE:
+		keys.performAction(keys.keyCounts["escape"], action);
+		break;
+	case GLFW_KEY_SPACE:
+		keys.performAction(keys.keyCounts["space"], action);
+		break;
+	case GLFW_KEY_LEFT_SHIFT:
+		keys.performAction(keys.keyCounts["leftShift"], action);
+		break;
+	case GLFW_KEY_RIGHT_SHIFT:
+		keys.performAction(keys.keyCounts["rightShift"], action);
+		break;
+	case GLFW_KEY_LEFT_CONTROL:
+		keys.performAction(keys.keyCounts["leftCtrl"], action);
+		break;
+	case GLFW_KEY_TAB:
+		keys.performAction(keys.keyCounts["tab"], action);
+		break;
+	case GLFW_KEY_LEFT:
+		keys.performAction(keys.keyCounts["leftArrow"], action);
+		break;
+	case GLFW_KEY_RIGHT:
+		keys.performAction(keys.keyCounts["rightArrow"], action);
+		break;
+	case GLFW_KEY_UP:
+		keys.performAction(keys.keyCounts["upArrow"], action);
+		break;
+	case GLFW_KEY_DOWN:
+		keys.performAction(keys.keyCounts["downArrow"], action);
+		break;
+	case GLFW_KEY_A:
+		keys.performAction(keys.keyCounts["a"], action);
+		break;
+	case GLFW_KEY_B:
+		keys.performAction(keys.keyCounts["b"], action);
+		break;
+	case GLFW_KEY_C:
+		keys.performAction(keys.keyCounts["c"], action);
+		break;
+	case GLFW_KEY_D:
+		keys.performAction(keys.keyCounts["d"], action);
+		break;
+	case GLFW_KEY_E:
+		keys.performAction(keys.keyCounts["e"], action);
+		break;
+	case GLFW_KEY_F:
+		keys.performAction(keys.keyCounts["f"], action);
+		break;
+	case GLFW_KEY_G:
+		keys.performAction(keys.keyCounts["g"], action);
+		break;
+	case GLFW_KEY_H:
+		keys.performAction(keys.keyCounts["h"], action);
+		break;
+	case GLFW_KEY_I:
+		keys.performAction(keys.keyCounts["i"], action);
+		break;
+	case GLFW_KEY_J:
+		keys.performAction(keys.keyCounts["j"], action);
+		break;
+	case GLFW_KEY_K:
+		keys.performAction(keys.keyCounts["k"], action);
+		break;
+	case GLFW_KEY_L:
+		keys.performAction(keys.keyCounts["l"], action);
+		break;
+	case GLFW_KEY_M:
+		keys.performAction(keys.keyCounts["m"], action);
+		break;
+	case GLFW_KEY_N:
+		keys.performAction(keys.keyCounts["n"], action);
+		break;
+	case GLFW_KEY_O:
+		keys.performAction(keys.keyCounts["o"], action);
+		break;
+	case GLFW_KEY_P:
+		keys.performAction(keys.keyCounts["p"], action);
+		break;
+	case GLFW_KEY_Q:
+		keys.performAction(keys.keyCounts["q"], action);
+		break;
+	case GLFW_KEY_R:
+		keys.performAction(keys.keyCounts["r"], action);
+		break;
+	case GLFW_KEY_S:
+		keys.performAction(keys.keyCounts["s"], action);
+		break;
+	case GLFW_KEY_T:
+		keys.performAction(keys.keyCounts["t"], action);
+		break;
+	case GLFW_KEY_U:
+		keys.performAction(keys.keyCounts["u"], action);
+		break;
+	case GLFW_KEY_V:
+		keys.performAction(keys.keyCounts["v"], action);
+		break;
+	case GLFW_KEY_W:
+		keys.performAction(keys.keyCounts["w"], action);
+		break;
+	case GLFW_KEY_X:
+		keys.performAction(keys.keyCounts["x"], action);
+		break;
+	case GLFW_KEY_Y:
+		keys.performAction(keys.keyCounts["y"], action);
+		break;
+	case GLFW_KEY_Z:
+		keys.performAction(keys.keyCounts["z"], action);
+		break;
 	}
 }
 
@@ -275,15 +276,16 @@ void Input::mouse_button_callback(int button, int action, int mods)
 {
 	switch (button)
 	{
-		case GLFW_MOUSE_BUTTON_LEFT:
-			keys.mouseLeft = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_MOUSE_BUTTON_RIGHT:
-			keys.mouseRight = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
-		case GLFW_MOUSE_BUTTON_MIDDLE:
-			keys.mouseMiddle = action & (GLFW_PRESS | GLFW_REPEAT);
-			break;
+	case GLFW_MOUSE_BUTTON_LEFT:
+		//keys.mouseLeft = action & (GLFW_PRESS | GLFW_REPEAT);
+		keys.performAction(keys.keyCounts["mouseLeft"], action);
+		break;
+	case GLFW_MOUSE_BUTTON_RIGHT:
+		keys.performAction(keys.keyCounts["mouseRight"], action);
+		break;
+	case GLFW_MOUSE_BUTTON_MIDDLE:
+		keys.performAction(keys.keyCounts["mouseMiddle"], action);
+		break;
 	}
 }
 

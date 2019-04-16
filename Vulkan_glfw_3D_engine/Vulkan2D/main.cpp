@@ -25,19 +25,17 @@ int main()
 
 		globals::globalInit();
 
-		bool lastF;
-
 		auto player1 = make_shared<Character>(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
 		player1->name = "player1";
 		globals::polyhedrons.push_back(player1);
 		
 		auto player2 = make_shared<Character>(glm::vec3(1, 1, 1) * 0.2f, glm::vec3(0, 4, 0), 60);
 		player2->name = "player2";
-		player2->controlScheme.forward = &globals::input.keys.upArrow;
-		player2->controlScheme.backward = &globals::input.keys.downArrow;
-		player2->controlScheme.left = &globals::input.keys.leftArrow;
-		player2->controlScheme.right = &globals::input.keys.rightArrow;
-		player2->controlScheme.jump = &globals::input.keys.rightShift;
+		player2->controlScheme.forward = &globals::input.keys.keyCounts["upArrow"];
+		player2->controlScheme.backward = &globals::input.keys.keyCounts["downArrow"];
+		player2->controlScheme.left = &globals::input.keys.keyCounts["leftArrow"];
+		player2->controlScheme.right = &globals::input.keys.keyCounts["rightArrow"];
+		player2->controlScheme.jump = &globals::input.keys.keyCounts["rightShift"];
 		globals::polyhedrons.push_back(player2);
 
 		auto currentTime = time_point_cast<us>(Time::now());
@@ -64,11 +62,10 @@ int main()
 
 				globals::gfx.setCameraPos(player1->position + cameraOffset);
 
-				if (globals::input.keys.f && !lastF)
+				if (globals::input.keys.keyCounts["f"] == 1)
 				{
 					globals::polyhedrons.push_back(make_shared<Cube>(1, glm::vec3(player1->position.x, player1->position.y, player1->position.z), 100));
 				}
-				lastF = globals::input.keys.f;
 
 				accumulator -= globals::dt;
 			}

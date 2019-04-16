@@ -3,7 +3,7 @@
 namespace collisionDetection {
 	//assumes object two is stationary at the moment
 	bool detectRectangleCollision(Rectangle& r1, Rectangle& r2) {
-		if (r1.x + r1.width + r1.xVel * r1.xVelMult > r2.x && r1.x + r1.xVel * r1.xVelMult < r2.x + r2.width && r1.y + r1.height + r1.yVel * r1.yVelMult > r2.y && r1.y + r1.yVel * r1.yVelMult < r2.y + r2.height) {
+		if (r1.x + r1.width + r1.xVel * r1.xVelMult >= r2.x && r1.x + r1.xVel * r1.xVelMult <= r2.x + r2.width && r1.y + r1.height + r1.yVel * r1.yVelMult >= r2.y && r1.y + r1.yVel * r1.yVelMult <= r2.y + r2.height) {
 			return true;
 		}
 
@@ -26,13 +26,13 @@ namespace collisionDetection {
 		//collision within xy
 		if (detectRectangleCollision(p1RectXY, p2RectXY))
 		{
-			if (p1.position.z >= p2.position.z + p2.dimensions.z && p1.position.z + p1.velocity.z < p2.position.z + p2.dimensions.z)
+			if (p1.position.z >= p2.position.z + p2.dimensions.z && p1.position.z + p1.velocity.z <= p2.position.z + p2.dimensions.z)
 			{
 				p1.velocity.z = 0;
 				p1.position.z = p2.position.z + p2.dimensions.z;
 				flags[0] = true; //xy coming back
 			}
-			else if (p1.position.z + p1.dimensions.z <= p2.position.z && p1.position.z + p1.dimensions.z + p1.velocity.z > p2.position.z)
+			else if (p1.position.z + p1.dimensions.z <= p2.position.z && p1.position.z + p1.dimensions.z + p1.velocity.z >= p2.position.z)
 			{
 				p1.velocity.z = 0;
 				p1.position.z = p2.position.z - p1.dimensions.z;
@@ -43,13 +43,13 @@ namespace collisionDetection {
 		//collision within xz
 		if (detectRectangleCollision(p1RectXZ, p2RectXZ))
 		{
-			if (p1.position.y >= p2.position.y + p2.dimensions.y && p1.position.y + p1.velocity.y < p2.position.y + p2.dimensions.y)
+			if (p1.position.y >= p2.position.y + p2.dimensions.y && p1.position.y + p1.velocity.y <= p2.position.y + p2.dimensions.y)
 			{
 				p1.velocity.y = 0;
 				p1.position.y = p2.position.y + p2.dimensions.y;
 				flags[2] = true; //xz from above
 			}
-			else if (p1.position.y + p1.dimensions.y - 0.01f <= p2.position.y && p1.position.y + p1.dimensions.y + p1.velocity.y > p2.position.y)
+			else if (p1.position.y + p1.dimensions.y - 0.01f <= p2.position.y && p1.position.y + p1.dimensions.y + p1.velocity.y >= p2.position.y)
 			{
 				p1.velocity.y = 0;
 				p1.position.y = p2.position.y - p1.dimensions.y;
@@ -60,13 +60,13 @@ namespace collisionDetection {
 		//collision within zy, looks weird because we flip x, and so our velocity is flipped also
 		if (detectRectangleCollision(p1RectZY, p2RectZY))
 		{
-			if (p1.position.x + p1.dimensions.x <= p2.position.x && p1.position.x + p1.dimensions.x + (-p1.velocity.x) > p2.position.x)
+			if (p1.position.x + p1.dimensions.x <= p2.position.x && p1.position.x + p1.dimensions.x + (-p1.velocity.x) >= p2.position.x)
 			{
 				p1.velocity.x = 0;
 				p1.position.x = p2.position.x - p1.dimensions.x;
 				flags[4] = true; //zy from right
 			}
-			else if (p1.position.x >= p2.position.x + p2.dimensions.x && p1.position.x + (-p1.velocity.x) < p2.position.x + p2.dimensions.x)
+			else if (p1.position.x >= p2.position.x + p2.dimensions.x && p1.position.x + (-p1.velocity.x) <= p2.position.x + p2.dimensions.x)
 			{
 				p1.velocity.x = 0;
 				p1.position.x = p2.position.x + p2.dimensions.x;

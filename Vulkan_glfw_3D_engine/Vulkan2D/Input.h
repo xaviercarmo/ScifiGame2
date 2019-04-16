@@ -3,71 +3,108 @@
 #include <GLFW\glfw3.h>
 #include <string>
 #include <glm\glm.hpp>
+#include <iostream>
+#include <algorithm>
+#include <map>
 
-struct KeyValues
+struct KeyCounts
 {
-	bool
-		a = false,
-		b = false,
-		c = false,
-		d = false,
-		e = false,
-		f = false,
-		g = false,
-		h = false,
-		i = false,
-		j = false,
-		k = false,
-		l = false,
-		m = false,
-		n = false,
-		o = false,
-		p = false,
-		q = false,
-		r = false,
-		s = false,
-		t = false,
-		u = false,
-		v = false,
-		w = false,
-		x = false,
-		y = false,
-		z = false,
+	std::map<std::string, int> keyCounts;
 
-		n1 = false,
-		n2 = false,
-		n3 = false,
-		n4 = false,
-		n5 = false,
-		n6 = false,
-		n7 = false,
-		n8 = false,
-		n9 = false,
-		n0 = false,
+	explicit KeyCounts()
+	{
+		keyCounts["a"] = 0;
+		keyCounts["b"] = 0;
+		keyCounts["c"] = 0;
+		keyCounts["d"] = 0;
+		keyCounts["e"] = 0;
+		keyCounts["f"] = 0;
+		keyCounts["g"] = 0;
+		keyCounts["h"] = 0;
+		keyCounts["i"] = 0;
+		keyCounts["j"] = 0;
+		keyCounts["k"] = 0;
+		keyCounts["l"] = 0;
+		keyCounts["m"] = 0;
+		keyCounts["n"] = 0;
+		keyCounts["o"] = 0;
+		keyCounts["p"] = 0;
+		keyCounts["q"] = 0;
+		keyCounts["r"] = 0;
+		keyCounts["s"] = 0;
+		keyCounts["t"] = 0;
+		keyCounts["u"] = 0;
+		keyCounts["v"] = 0;
+		keyCounts["w"] = 0;
+		keyCounts["x"] = 0;
+		keyCounts["y"] = 0;
+		keyCounts["z"] = 0;
 
-		leftShift = false,
-		rightShift = false,
-		space = false,
-		leftCtrl = false,
-		tab = false,
-		leftAlt = false,
-		escape = false,
+		keyCounts["n1"] = 0;
+		keyCounts["n2"] = 0;
+		keyCounts["n3"] = 0;
+		keyCounts["n4"] = 0;
+		keyCounts["n5"] = 0;
+		keyCounts["n6"] = 0;
+		keyCounts["n7"] = 0;
+		keyCounts["n8"] = 0;
+		keyCounts["n9"] = 0;
+		keyCounts["n0"] = 0;
 
-		mouseLeft = false,
-		mouseRight = false,
-		mouseMiddle = false,
+		keyCounts["leftShift"] = 0;
+		keyCounts["rightShift"] = 0;
+		keyCounts["space"] = 0;
+		keyCounts["leftCtrl"] = 0;
+		keyCounts["tab"] = 0;
+		keyCounts["leftAlt"] = 0;
+		keyCounts["escape"] = 0;
 
-		leftArrow = false,
-		rightArrow = false,
-		upArrow = false,
-		downArrow = false;
+		keyCounts["mouseLeft"] = 0;
+		keyCounts["mouseRight"] = 0;
+		keyCounts["mouseMiddle"] = 0;
+
+		keyCounts["leftArrow"] = 0;
+		keyCounts["rightArrow"] = 0;
+		keyCounts["upArrow"] = 0;
+		keyCounts["downArrow"] = 0;
+	}
+
+	void performAction(int& keyCount, int action)
+	{
+		if (action & (GLFW_PRESS | GLFW_REPEAT))
+		{
+			if (keyCount == 0)
+			{
+				keyCount = -1;
+			}
+		}
+		else
+		{
+			keyCount = 0;
+		}
+	}
+
+	void updateCounts()
+	{
+		for (auto& keyValuePair : keyCounts)
+		{
+			if (keyValuePair.second == -1)
+			{
+				keyValuePair.second = 1;
+			}
+			else if (keyValuePair.second > 0)
+			{
+				keyValuePair.second++;
+			}
+		}
+	}
 };
 
-class Input {
+class Input
+{
 public:
 	std::string inputString = "";
-	KeyValues keys;
-	//int mouseScrollValue = 0;
+	KeyCounts keys;
 	bool stringInputEnabled = true;
 	bool EXIT = false;
 	void run();
