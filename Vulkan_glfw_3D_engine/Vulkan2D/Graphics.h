@@ -219,8 +219,10 @@ private:
 
 	VkRenderPass renderPass;
 	VkDescriptorSetLayout descriptorSetLayout;
+
 	VkPipelineLayout pipelineLayout;
-	VkPipeline graphicsPipeline;
+	VkPipeline triangleGraphicsPipeline;
+	VkPipeline lineGraphicsPipeline;
 
 	VkCommandPool commandPool;
 
@@ -319,7 +321,9 @@ private:
 
 	void createDescriptorSetLayout();
 
-	void createGraphicsPipeline();
+	void createTriangleGraphicsPipeline();
+
+	void createLineGraphicsPipeline();
 
 	void createFramebuffers();
 
