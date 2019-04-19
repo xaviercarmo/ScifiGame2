@@ -1483,19 +1483,14 @@ void Graphics::createCommandBuffers() {
 
 		vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &descriptorSets[i], 0, nullptr);
 		for (int j = 0; j < objects.size(); j++) {
-			//push constant for object index
-			if (j % 2) {
-				vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, lineGraphicsPipeline);
-			}
-			else {
-				vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, triangleGraphicsPipeline);
-			}
+			vkCmdBindPipeline(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, objects[j].wireFrame ? lineGraphicsPipeline : triangleGraphicsPipeline);
+
 			vkCmdPushConstants(commandBuffers[i], pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(int), (void*)&j);
 			vkCmdDrawIndexed(commandBuffers[i], static_cast<uint32_t>(objects[j].model->size), 1, static_cast<uint32_t>(objects[j].model->offset), 0, 0);
 		}
 
 		vkCmdEndRenderPass(commandBuffers[i]);
-
+		
 		if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {
 			throw std::runtime_error("failed to record command buffer!");
 		}
@@ -1901,13 +1896,14 @@ GLFWwindow* Graphics::getWindowPointer() {
 	return window;
 }
 
-int Graphics::addObject(glm::vec3 position, glm::vec3 scale, int modelIndex) {
+int Graphics::addObject(glm::vec3 position, glm::vec3 scale, int modelIndex, bool wireFrame) {
 	if (objects.size() >= MAX_OBJECTS) { return NULL; }
 
 	objects.push_back(Object());
 	objects[objects.size() - 1].position = position;
 	objects[objects.size() - 1].scale = scale;
 	objects[objects.size() - 1].model = &models[modelIndex];
+	objects[objects.size() - 1].wireFrame = wireFrame;
 	recalculateObjectMatrix(objects.size() - 1);
 
 	return objects.size() - 1;
@@ -1947,15 +1943,26 @@ Object* Graphics::getObjectAtIndex(int i)
 	}
 } //cannot just store reference to object (as commented out addObject does) because i think on vector resize the memory addresses get changed
 
-glm::vec3 Graphics::getCameraPos() {
+glm::vec3 Graphics::getCameraPos()
+{
 	return cameraPosition;
 }
 
-void Graphics::setFreeLook(bool value){
+void Graphics::setFreeLook(bool value)
+{
 	freeLook = value;
 }
 
-void Graphics::clearStorageBuffer() {
+void Graphics::setObjectsWireFrame(bool value)
+{
+	for (auto &object : objects)
+	{
+		object.wireFrame = value;
+	}
+}
+
+void Graphics::clearStorageBuffer()
+{
 	vkDestroyBuffer(device, storageBuffer, nullptr);
 	vkFreeMemory(device, storageBufferMemory, nullptr);
 	storageBufferMemory = VK_NULL_HANDLE;

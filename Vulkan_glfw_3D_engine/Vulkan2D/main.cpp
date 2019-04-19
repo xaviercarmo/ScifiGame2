@@ -67,6 +67,15 @@ int main()
 					globals::polyhedrons.push_back(make_shared<Cube>(1, glm::vec3(player1->position.x, player1->position.y, player1->position.z), 100));
 				}
 
+				if (globals::input.keys.keyCounts["leftCtrl"] == 1)
+				{
+					globals::gfx.setObjectsWireFrame(true);
+				}
+				else if (globals::input.keys.keyCounts["leftCtrl"] == 0)
+				{
+					globals::gfx.setObjectsWireFrame(false);
+				}
+
 				accumulator -= globals::dt;
 			}
 

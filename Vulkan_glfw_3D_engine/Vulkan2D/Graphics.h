@@ -33,6 +33,7 @@ struct Object {
 	glm::mat4 transformData;
 	glm::vec3 scale;
 	glm::vec3 position;
+	bool wireFrame = false;
 };
 
 struct UniformBufferObject {
@@ -152,7 +153,7 @@ public:
 
 	GLFWwindow* getWindowPointer();
 
-	int addObject(glm::vec3 position, glm::vec3 scale, int modelIndex);
+	int addObject(glm::vec3 position, glm::vec3 scale, int modelIndex, bool wireFrame = false);
 
 	void moveObject(int objectIndex, glm::vec3 position);
 
@@ -167,6 +168,8 @@ public:
 	glm::vec3 getCameraPos();
 
 	void setFreeLook(bool value);
+
+	void setObjectsWireFrame(bool value);
 
 private:
 
