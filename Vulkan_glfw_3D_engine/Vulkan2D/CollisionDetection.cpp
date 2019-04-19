@@ -3,7 +3,7 @@
 namespace collisionDetection {
 	//assumes object two is stationary at the moment
 	bool detectRectangleCollision(Rectangle& r1, Rectangle& r2) {
-		if (r1.x + r1.width + r1.xVel * r1.xVelMult >= r2.x && r1.x + r1.xVel * r1.xVelMult <= r2.x + r2.width && r1.y + r1.height + r1.yVel * r1.yVelMult >= r2.y && r1.y + r1.yVel * r1.yVelMult <= r2.y + r2.height) {
+		if (r1.x + r1.width + r1.xVel * r1.xVelMult > r2.x && r1.x + r1.xVel * r1.xVelMult < r2.x + r2.width && r1.y + r1.height + r1.yVel * r1.yVelMult > r2.y && r1.y + r1.yVel * r1.yVelMult < r2.y + r2.height) {
 			return true;
 		}
 
@@ -14,6 +14,7 @@ namespace collisionDetection {
 	void correctPolyhedrons(Polyhedron& p1, Polyhedron& p2)
 	{
 		std::vector<bool> flags(6, false); //useful for debugging
+		std::vector<bool> flagsBase(6, false);
 
 		Rectangle p1RectXY = Rectangle{ p1.position.x, p1.position.y, p1.dimensions.x, p1.dimensions.y, p1.velocity.x, -1, p1.velocity.y, 1 };
 		Rectangle p1RectXZ = Rectangle{ p1.position.x, p1.position.z, p1.dimensions.x, p1.dimensions.z, p1.velocity.x, -1, p1.velocity.z, 1 };
@@ -49,7 +50,7 @@ namespace collisionDetection {
 				p1.position.y = p2.position.y + p2.dimensions.y;
 				flags[2] = true; //xz from above
 			}
-			else if (p1.position.y + p1.dimensions.y - 0.01f <= p2.position.y && p1.position.y + p1.dimensions.y + p1.velocity.y >= p2.position.y)
+			else if (p1.position.y + p1.dimensions.y <= p2.position.y && p1.position.y + p1.dimensions.y + p1.velocity.y >= p2.position.y)
 			{
 				p1.velocity.y = 0;
 				p1.position.y = p2.position.y - p1.dimensions.y;
@@ -79,3 +80,4 @@ namespace collisionDetection {
 //Collision bugs
 //	1. if going too fast can clip to object behind closest object
 //  2. gravity can cause clipping through object (think that's why)
+//  3. if two players are pushing against each other and land on an object one goes over the other (doesn't clip inside, actually clips above it)
