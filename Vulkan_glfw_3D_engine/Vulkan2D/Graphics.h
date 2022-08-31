@@ -119,7 +119,7 @@ const std::string MODEL_PATH = "models/chalet.obj";
 const std::string TEXTURE_PATH = "textures/normal.png";
 
 const std::vector<const char*> validationLayers = {
-	"VK_LAYER_LUNARG_standard_validation"
+	"VK_LAYER_KHRONOS_validation"
 };
 
 const std::vector<const char*> deviceExtensions = {
